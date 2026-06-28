@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { contactApi } from "@/lib/api/contact";
+import { settingsApi } from "@/lib/api/settings";
+import type { Settings } from "@/lib/api/settings";
 
 const resumeSections = [
   { id: "experience", label: "01 // Experience" },
@@ -11,43 +13,18 @@ const resumeSections = [
   { id: "certifications", label: "03 // Certifications" },
 ];
 
-const experiences = [
-  {
-    role: "Lead Core Engineer",
-    company: "Nexus Dynamics",
-    period: "2021 - Present",
-    description:
-      "Architected distributed microservices handling 50M+ daily events. Optimized latency by 40% through rigorous profiling and rewriting critical paths in Rust. Established engineering standards for the global team.",
-  },
-  {
-    role: "Senior Frontend Developer",
-    company: "Vanguard Tech Group",
-    period: "2018 - 2021",
-    description:
-      "Led the migration of a legacy monolithic frontend to a modern React-based architecture. Implemented a comprehensive design system reducing UI inconsistencies by 80%.",
-  },
-];
-
-const testimonials = [
-  {
-    quote:
-      "An exceptional talent. They don't just write code; they engineer robust solutions that scale effortlessly. Their attention to detail and commitment to clean architecture elevated our entire product line.",
-    name: "Sarah Jenkins",
-    title: "CTO, Nexus Dynamics",
-  },
-  {
-    quote:
-      "Rarely do you find an engineer who possesses both deep technical expertise and a refined sense of design. Their work bridges the gap between high performance and user experience seamlessly.",
-    name: "David Chen",
-    title: "VP Engineering, Vanguard Tech",
-  },
-];
-
 export default function AboutPage() {
+  const [settings, setSettings] = useState<Settings | null>(null);
   const [activeSection, setActiveSection] = useState("experience");
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
   const [contactSent, setContactSent] = useState(false);
   const [contactError, setContactError] = useState("");
+
+  useEffect(() => {
+    settingsApi.getPublic().then((res) => {
+      if (res.data) setSettings(res.data);
+    }).catch(() => {});
+  }, []);
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +38,8 @@ export default function AboutPage() {
     }
   };
 
+  const s = settings;
+
   return (
     <main className="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-content mx-auto space-y-32">
       {/* About Section */}
@@ -68,41 +47,67 @@ export default function AboutPage() {
         <div className="md:col-span-7 space-y-8 flex flex-col justify-center">
           <div className="space-y-4">
             <h1 className="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
-              Architecting <span className="text-primary">Precision</span>.
+              {s?.displayName ? (
+                <>
+                  {s.displayName}
+                </>
+              ) : (
+                <>
+                  Architecting <span className="text-primary">Precision</span>.
+                </>
+              )}
             </h1>
-            <p className="font-headline-md text-headline-md text-on-surface-variant font-normal max-w-2xl">
-              I build high-performance digital infrastructure with a focus on
-              rigorous engineering and elegant execution.
-            </p>
+            {s?.tagline && (
+              <p className="font-headline-md text-headline-md text-on-surface-variant font-normal max-w-2xl">
+                {s.tagline}
+              </p>
+            )}
           </div>
 
-          <div className="bg-surface-container border border-white/10 rounded-xl p-8 space-y-4 inner-glow">
-            <h3 className="font-label-caps text-label-caps text-tertiary">
-              Mission Statement
-            </h3>
-            <p className="text-on-surface-variant leading-relaxed">
-              To merge the utility of complex developer tools with the refined
-              experience of a premium product. I believe that code should be as
-              clean and structurally sound as the interfaces it powers.
-            </p>
-          </div>
+          {s?.bio && (
+            <div className="bg-surface-container border border-white/10 rounded-xl p-8 inner-glow">
+              <p className="text-on-surface-variant leading-relaxed whitespace-pre-line">
+                {s.bio}
+              </p>
+            </div>
+          )}
 
-          <div className="flex gap-4 flex-wrap">
-            {["TypeScript", "Rust", "Flutter", "System Design"].map((tech) => (
-              <span
-                key={tech}
-                className="bg-[#16181D] text-[#666666] font-code-sm text-code-sm px-3 py-1 rounded border border-white/5"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+          {s?.skills && s.skills.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="font-label-caps text-label-caps text-tertiary">
+                Skills
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {s.skills.map((skill, i) => (
+                  <div key={i} className="flex flex-col gap-1">
+                    <div className="bg-[#16181D] text-on-surface-variant font-code-sm text-code-sm px-3 py-1.5 rounded border border-white/5">
+                      {skill.name}
+                    </div>
+                    <div className="w-full h-1 bg-[#16181D] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary rounded-full transition-all"
+                        style={{ width: `${skill.level}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="md:col-span-5 relative h-[500px] rounded-xl overflow-hidden border border-white/10 inner-glow bg-surface-container-low flex items-center justify-center">
-          <span className="material-symbols-outlined text-8xl text-primary/20">
-            person
-          </span>
+          {s?.avatar ? (
+            <img
+              src={s.avatar}
+              alt={s.displayName || "Avatar"}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <span className="material-symbols-outlined text-8xl text-primary/20">
+              person
+            </span>
+          )}
         </div>
       </section>
 
@@ -112,12 +117,19 @@ export default function AboutPage() {
           <h2 className="font-headline-md text-headline-md text-on-surface">
             Curriculum Vitae
           </h2>
-          <button className="flex items-center gap-2 bg-primary-container text-on-primary-container px-5 py-2.5 rounded-lg inner-glow hover:bg-inverse-primary transition-all duration-300">
-            <span className="material-symbols-outlined text-sm">download</span>
-            <span className="font-code-sm text-code-sm font-semibold">
-              Download PDF
-            </span>
-          </button>
+          {s?.resumeUrl && (
+            <a
+              href={s.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-primary-container text-on-primary-container px-5 py-2.5 rounded-lg inner-glow hover:bg-inverse-primary transition-all duration-300"
+            >
+              <span className="material-symbols-outlined text-sm">download</span>
+              <span className="font-code-sm text-code-sm font-semibold">
+                Download PDF
+              </span>
+            </a>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -138,168 +150,197 @@ export default function AboutPage() {
           </div>
 
           <div className="md:col-span-2 space-y-12 pl-0 md:pl-8 border-l border-white/5">
-            {activeSection === "experience" &&
-              experiences.map((exp, i) => (
-                <div key={i} className="space-y-4 relative">
-                  <div className="absolute -left-[33px] top-2 w-2 h-2 bg-primary rounded-full hidden md:block ring-4 ring-background" />
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="font-body-base text-body-base font-bold text-on-surface">
-                      {exp.role}
-                    </h3>
-                    <span className="font-code-sm text-code-sm text-tertiary">
-                      {exp.period}
-                    </span>
+            {activeSection === "experience" && (
+              s?.experience && s.experience.length > 0 ? (
+                s.experience.map((exp, i) => (
+                  <div key={i} className="space-y-4 relative">
+                    <div className="absolute -left-[33px] top-2 w-2 h-2 bg-primary rounded-full hidden md:block ring-4 ring-background" />
+                    <div className="flex justify-between items-baseline">
+                      <h3 className="font-body-base text-body-base font-bold text-on-surface">
+                        {exp.role}
+                      </h3>
+                      <span className="font-code-sm text-code-sm text-tertiary">
+                        {exp.startDate} — {exp.current ? "Present" : exp.endDate}
+                      </span>
+                    </div>
+                    <p className="font-body-base text-body-base text-on-surface-variant font-medium">
+                      {exp.company}
+                    </p>
+                    <p className="text-on-surface-variant/80 text-sm leading-relaxed">
+                      {exp.description}
+                    </p>
+                    {exp.technologies && exp.technologies.length > 0 && (
+                      <div className="flex gap-2 flex-wrap">
+                        {exp.technologies.map((tech, j) => (
+                          <span
+                            key={j}
+                            className="bg-[#16181D] text-[#666666] font-code-sm text-[10px] px-2 py-0.5 rounded"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <p className="font-body-base text-body-base text-on-surface-variant font-medium">
-                    {exp.company}
-                  </p>
-                  <p className="text-on-surface-variant/80 text-sm leading-relaxed">
-                    {exp.description}
-                  </p>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-on-surface-variant">Experience details coming soon.</p>
+              )
+            )}
 
             {activeSection === "education" && (
-              <p className="text-on-surface-variant">Education details coming soon.</p>
+              s?.education && s.education.length > 0 ? (
+                s.education.map((edu, i) => (
+                  <div key={i} className="space-y-2 relative">
+                    <div className="absolute -left-[33px] top-2 w-2 h-2 bg-primary rounded-full hidden md:block ring-4 ring-background" />
+                    <div className="flex justify-between items-baseline">
+                      <h3 className="font-body-base text-body-base font-bold text-on-surface">
+                        {edu.degree} in {edu.field}
+                      </h3>
+                      <span className="font-code-sm text-code-sm text-tertiary">
+                        {edu.startDate} — {edu.current ? "Present" : edu.endDate}
+                      </span>
+                    </div>
+                    <p className="font-body-base text-body-base text-on-surface-variant font-medium">
+                      {edu.institution}
+                    </p>
+                    {edu.description && (
+                      <p className="text-on-surface-variant/80 text-sm leading-relaxed">
+                        {edu.description}
+                      </p>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="text-on-surface-variant">Education details coming soon.</p>
+              )
             )}
 
             {activeSection === "certifications" && (
-              <p className="text-on-surface-variant">Certifications coming soon.</p>
+              s?.certifications && s.certifications.length > 0 ? (
+                s.certifications.map((cert, i) => (
+                  <div key={i} className="space-y-2 relative">
+                    <div className="absolute -left-[33px] top-2 w-2 h-2 bg-primary rounded-full hidden md:block ring-4 ring-background" />
+                    <div className="flex justify-between items-baseline">
+                      <h3 className="font-body-base text-body-base font-bold text-on-surface">
+                        {cert.url ? (
+                          <a href={cert.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                            {cert.name}
+                          </a>
+                        ) : (
+                          cert.name
+                        )}
+                      </h3>
+                      <span className="font-code-sm text-code-sm text-tertiary">
+                        {cert.date}
+                      </span>
+                    </div>
+                    <p className="font-body-base text-body-base text-on-surface-variant font-medium">
+                      {cert.issuer}
+                    </p>
+                    {cert.description && (
+                      <p className="text-on-surface-variant/80 text-sm leading-relaxed">
+                        {cert.description}
+                      </p>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="text-on-surface-variant">Certifications coming soon.</p>
+              )
             )}
           </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="space-y-12">
-        <div className="flex flex-col items-center text-center space-y-4">
-          <h2 className="font-headline-md text-headline-md text-on-surface">
-            Peer Reviews
-          </h2>
-          <div className="w-12 h-1 bg-primary/30" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className="bg-surface-container border border-white/5 rounded-xl p-8 space-y-6 hover:border-primary/50 transition-colors duration-500 group relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <span
-                  className="material-symbols-outlined text-6xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  format_quote
-                </span>
-              </div>
-              <p className="font-body-base text-body-base text-on-surface-variant italic relative z-10">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div className="flex items-center gap-4 pt-4 border-t border-white/5 relative z-10">
-                <div className="w-12 h-12 rounded-full bg-surface-bright/30 border border-white/10 flex items-center justify-center text-on-surface font-bold">
-                  {t.name.charAt(0)}
-                </div>
-                <div>
-                  <h4 className="font-body-base text-body-base font-semibold text-on-surface">
-                    {t.name}
-                  </h4>
-                  <p className="font-code-sm text-code-sm text-on-surface-variant/70">
-                    {t.title}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
       {/* Contact */}
-      <section className="max-w-3xl mx-auto space-y-12" id="contact">
-        <div className="text-center space-y-4">
-          <h2 className="font-headline-md text-headline-md text-on-surface">
-            Initiate Connection
-          </h2>
-          <p className="font-body-base text-body-base text-on-surface-variant">
-            For inquiries regarding architectural consultation or engineering roles.
-          </p>
-        </div>
-
-        {contactSent ? (
-          <div className="text-center py-16">
-            <span className="material-symbols-outlined text-6xl text-tertiary">
-              check_circle
-            </span>
-            <p className="font-headline-md text-headline-md text-on-surface mt-4">
-              Message Sent
+      {s?.contactEnabled !== false && (
+        <section className="max-w-3xl mx-auto space-y-12" id="contact">
+          <div className="text-center space-y-4">
+            <h2 className="font-headline-md text-headline-md text-on-surface">
+              Initiate Connection
+            </h2>
+            <p className="font-body-base text-body-base text-on-surface-variant">
+              For inquiries regarding architectural consultation or engineering roles.
             </p>
-            <p className="text-on-surface-variant mt-2">
-              Thank you for reaching out. I&apos;ll respond promptly.
-            </p>
-            <button
-              onClick={() => setContactSent(false)}
-              className="mt-8 text-primary hover:underline font-code-sm"
-            >
-              Send another message
-            </button>
           </div>
-        ) : (
-          <form
-            onSubmit={handleContactSubmit}
-            className="space-y-6 bg-surface-container/50 border border-white/5 p-8 rounded-xl backdrop-blur-sm"
-          >
-            {contactError && (
-              <div className="p-4 bg-error-container/20 border border-error/30 rounded-lg">
-                <p className="font-code-sm text-code-sm text-error">{contactError}</p>
-              </div>
-            )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input
-                id="contact-name"
-                label="Identification"
-                value={contactForm.name}
-                onChange={(e) =>
-                  setContactForm((f) => ({ ...f, name: e.target.value }))
-                }
-                placeholder="John Doe"
-                required
-              />
-              <Input
-                id="contact-email"
-                label="Comm Channel"
-                type="email"
-                value={contactForm.email}
-                onChange={(e) =>
-                  setContactForm((f) => ({ ...f, email: e.target.value }))
-                }
-                placeholder="john@domain.com"
-                required
-              />
+          {contactSent ? (
+            <div className="text-center py-16">
+              <span className="material-symbols-outlined text-6xl text-tertiary">
+                check_circle
+              </span>
+              <p className="font-headline-md text-headline-md text-on-surface mt-4">
+                Message Sent
+              </p>
+              <p className="text-on-surface-variant mt-2">
+                Thank you for reaching out. I&apos;ll respond promptly.
+              </p>
+              <button
+                onClick={() => setContactSent(false)}
+                className="mt-8 text-primary hover:underline font-code-sm"
+              >
+                Send another message
+              </button>
             </div>
-
-            <Textarea
-              id="contact-message"
-              label="Payload"
-              value={contactForm.message}
-              onChange={(e) =>
-                setContactForm((f) => ({ ...f, message: e.target.value }))
-              }
-              placeholder="Transmit your message here..."
-              rows={5}
-              required
-            />
-
-            <button
-              type="submit"
-              className="w-full py-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-xl hover:bg-white/5 hover:border-primary transition-all duration-300 flex justify-center items-center gap-2"
+          ) : (
+            <form
+              onSubmit={handleContactSubmit}
+              className="space-y-6 bg-surface-container/50 border border-white/5 p-8 rounded-xl backdrop-blur-sm"
             >
-              Transmit{" "}
-              <span className="material-symbols-outlined text-sm">send</span>
-            </button>
-          </form>
-        )}
-      </section>
+              {contactError && (
+                <div className="p-4 bg-error-container/20 border border-error/30 rounded-lg">
+                  <p className="font-code-sm text-code-sm text-error">{contactError}</p>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input
+                  id="contact-name"
+                  label="Identification"
+                  value={contactForm.name}
+                  onChange={(e) =>
+                    setContactForm((f) => ({ ...f, name: e.target.value }))
+                  }
+                  placeholder="John Doe"
+                  required
+                />
+                <Input
+                  id="contact-email"
+                  label="Comm Channel"
+                  type="email"
+                  value={contactForm.email}
+                  onChange={(e) =>
+                    setContactForm((f) => ({ ...f, email: e.target.value }))
+                  }
+                  placeholder="john@domain.com"
+                  required
+                />
+              </div>
+
+              <Textarea
+                id="contact-message"
+                label="Payload"
+                value={contactForm.message}
+                onChange={(e) =>
+                  setContactForm((f) => ({ ...f, message: e.target.value }))
+                }
+                placeholder="Transmit your message here..."
+                rows={5}
+                required
+              />
+
+              <button
+                type="submit"
+                className="w-full py-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-xl hover:bg-white/5 hover:border-primary transition-all duration-300 flex justify-center items-center gap-2"
+              >
+                Transmit{" "}
+                <span className="material-symbols-outlined text-sm">send</span>
+              </button>
+            </form>
+          )}
+        </section>
+      )}
     </main>
   );
 }

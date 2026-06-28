@@ -1,11 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { connectDatabase } from "@/lib/server/config/database";
+import { Settings } from "@/lib/server/models/Settings";
 
-export const metadata: Metadata = {
-  title: "Flutter Developer Portfolio",
-  description:
-    "High-performance, cross-platform applications built with Flutter.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    await connectDatabase();
+    const settings = await Settings.findOne().sort({ createdAt: -1 }).lean();
+    if (settings) {
+      return {
+        title: settings.siteTitle || "Portfolio",
+        description: settings.metaDescription || "",
+        icons: settings.favicon ? { icon: settings.favicon } : undefined,
+      };
+    }
+  } catch {
+    // fall back to defaults
+  }
+  return {
+    title: "Portfolio",
+    description: "Personal portfolio",
+  };
+}
 
 export default function RootLayout({
   children,

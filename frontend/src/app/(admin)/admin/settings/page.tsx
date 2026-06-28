@@ -6,21 +6,48 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Toggle } from "@/components/ui/Toggle";
 import { settingsApi } from "@/lib/api/settings";
 import { mediaApi, LocalMediaResource } from "@/lib/api/media";
+import type { Settings, Skill, Experience, Education, Certification, SocialLink } from "@/lib/api/settings";
+
+const tabs = [
+  { id: "general", label: "General", icon: "settings" },
+  { id: "profile", label: "Profile", icon: "person" },
+  { id: "skills", label: "Skills", icon: "psychology" },
+  { id: "experience", label: "Experience", icon: "work_history" },
+  { id: "education", label: "Education", icon: "school" },
+  { id: "certifications", label: "Certifications", icon: "verified" },
+  { id: "social", label: "Social Links", icon: "share" },
+];
+
+type FormState = Omit<Settings, "_id">;
 
 export default function AdminSettingsPage() {
   const [media, setMedia] = useState<LocalMediaResource[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [activeTab, setActiveTab] = useState("general");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     displayName: "",
     tagline: "",
+    avatar: "",
+    favicon: "",
     siteTitle: "",
     metaDescription: "",
-    forceDarkMode: true,
+    bio: "",
+    aboutContent: "",
+    location: "",
+    email: "",
+    phone: "",
+    resumeUrl: "",
+    skills: [],
     socialLinks: [{ name: "", icon: "link", url: "" }],
+    experience: [],
+    education: [],
+    certifications: [],
+    forceDarkMode: true,
+    contactEnabled: true,
   });
 
   useEffect(() => {
@@ -35,10 +62,23 @@ export default function AdminSettingsPage() {
           setForm({
             displayName: s.displayName,
             tagline: s.tagline || "",
+            avatar: s.avatar || "",
+            favicon: s.favicon || "",
             siteTitle: s.siteTitle,
             metaDescription: s.metaDescription || "",
-            forceDarkMode: s.forceDarkMode ?? true,
+            bio: s.bio || "",
+            aboutContent: s.aboutContent || "",
+            location: s.location || "",
+            email: s.email || "",
+            phone: s.phone || "",
+            resumeUrl: s.resumeUrl || "",
+            skills: s.skills || [],
             socialLinks: s.socialLinks?.length ? s.socialLinks : [{ name: "", icon: "link", url: "" }],
+            experience: s.experience || [],
+            education: s.education || [],
+            certifications: s.certifications || [],
+            forceDarkMode: s.forceDarkMode ?? true,
+            contactEnabled: s.contactEnabled ?? true,
           });
         }
         setMedia(mediaRes.data || []);
@@ -51,24 +91,87 @@ export default function AdminSettingsPage() {
     load();
   }, []);
 
-  const handleChange = (field: string, value: unknown) => {
+  function handleChange(field: keyof FormState, value: unknown) {
     setForm((prev) => ({ ...prev, [field]: value }));
-  };
+  }
 
-  const handleSocialChange = (index: number, field: "name" | "icon" | "url", value: string) => {
+  function handleSocialChange(index: number, field: keyof SocialLink, value: string) {
     const links = [...form.socialLinks];
     links[index] = { ...links[index], [field]: value };
     handleChange("socialLinks", links);
-  };
+  }
 
-  const addSocialLink = () => {
+  function addSocialLink() {
     handleChange("socialLinks", [...form.socialLinks, { name: "", icon: "link", url: "" }]);
-  };
+  }
 
-  const removeSocialLink = (index: number) => {
-    const links = form.socialLinks.filter((_, i) => i !== index);
-    handleChange("socialLinks", links);
-  };
+  function removeSocialLink(index: number) {
+    handleChange("socialLinks", form.socialLinks.filter((_, i) => i !== index));
+  }
+
+  function handleSkillChange(index: number, field: keyof Skill, value: string | number) {
+    const skills = [...form.skills];
+    skills[index] = { ...skills[index], [field]: value as never };
+    handleChange("skills", skills);
+  }
+
+  function addSkill() {
+    handleChange("skills", [...form.skills, { name: "", level: 50 }]);
+  }
+
+  function removeSkill(index: number) {
+    handleChange("skills", form.skills.filter((_, i) => i !== index));
+  }
+
+  function handleExpChange(index: number, field: keyof Experience, value: unknown) {
+    const items = [...form.experience];
+    items[index] = { ...items[index], [field]: value as never };
+    handleChange("experience", items);
+  }
+
+  function addExperience() {
+    handleChange("experience", [...form.experience, {
+      company: "", role: "", startDate: "", endDate: "",
+      current: false, description: "", technologies: [],
+    }]);
+  }
+
+  function removeExperience(index: number) {
+    handleChange("experience", form.experience.filter((_, i) => i !== index));
+  }
+
+  function handleEduChange(index: number, field: keyof Education, value: unknown) {
+    const items = [...form.education];
+    items[index] = { ...items[index], [field]: value as never };
+    handleChange("education", items);
+  }
+
+  function addEducation() {
+    handleChange("education", [...form.education, {
+      institution: "", degree: "", field: "", startDate: "", endDate: "",
+      current: false, description: "",
+    }]);
+  }
+
+  function removeEducation(index: number) {
+    handleChange("education", form.education.filter((_, i) => i !== index));
+  }
+
+  function handleCertChange(index: number, field: keyof Certification, value: string) {
+    const items = [...form.certifications];
+    items[index] = { ...items[index], [field]: value };
+    handleChange("certifications", items);
+  }
+
+  function addCertification() {
+    handleChange("certifications", [...form.certifications, {
+      name: "", issuer: "", date: "", url: "", description: "",
+    }]);
+  }
+
+  function removeCertification(index: number) {
+    handleChange("certifications", form.certifications.filter((_, i) => i !== index));
+  }
 
   const handleSave = async () => {
     setSaving(true);
@@ -124,7 +227,6 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="space-y-12 pb-24">
-      {/* Media Library */}
       <section>
         <div className="flex justify-between items-end mb-6">
           <div>
@@ -146,7 +248,6 @@ export default function AdminSettingsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-          {/* Upload Dropzone */}
           <div
             onClick={() => fileInputRef.current?.click()}
             className="md:col-span-4 bg-[#0A0C10] border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center p-8 text-center min-h-[250px] transition-colors hover:border-primary cursor-pointer group"
@@ -178,7 +279,6 @@ export default function AdminSettingsPage() {
             </button>
           </div>
 
-          {/* Asset Grid */}
           <div className="md:col-span-8 grid grid-cols-2 lg:grid-cols-3 gap-4">
             {media.length === 0 ? (
               <div className="col-span-full flex items-center justify-center h-[250px] text-on-surface-variant text-sm">
@@ -228,26 +328,92 @@ export default function AdminSettingsPage() {
 
       <hr className="border-t border-white/5" />
 
-      {/* Settings */}
       <section>
         <div className="mb-8">
           <h3 className="font-headline-md text-headline-md text-on-surface">
             Global Settings
           </h3>
           <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
-            Configure your portfolio identity and preferences
+            Configure your portfolio identity and content
           </p>
         </div>
 
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-code-sm text-code-sm whitespace-nowrap transition-colors ${
+                activeTab === tab.id
+                  ? "bg-primary-container text-on-primary-container"
+                  : "text-on-surface-variant hover:bg-surface-bright/10 hover:text-on-surface"
+              }`}
+            >
+              <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Form Area */}
           <div className="lg:col-span-8 space-y-8">
-            {/* Profile */}
-            <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10">
-              <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-6 border-b border-white/5 pb-2">
-                Profile & Identity
-              </h4>
-              <div className="space-y-4">
+            {/* General Tab */}
+            {activeTab === "general" && (
+              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
+                <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-4 border-b border-white/5 pb-2">
+                  Site & SEO
+                </h4>
+                <Input
+                  id="siteTitle"
+                  label="Site Title"
+                  value={form.siteTitle}
+                  onChange={(e) => handleChange("siteTitle", e.target.value)}
+                />
+                <Input
+                  id="favicon"
+                  label="Favicon URL"
+                  value={form.favicon || ""}
+                  onChange={(e) => handleChange("favicon", e.target.value)}
+                  placeholder="https://example.com/favicon.ico"
+                />
+                <div className="flex flex-col gap-2">
+                  <label className="font-label-caps text-label-caps text-on-surface-variant">
+                    Meta Description
+                  </label>
+                  <Textarea
+                    id="metaDescription"
+                    value={form.metaDescription}
+                    onChange={(e) => handleChange("metaDescription", e.target.value)}
+                    rows={3}
+                  />
+                </div>
+                <div className="space-y-4 pt-4 border-t border-white/5">
+                  <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-4">
+                    Preferences
+                  </h4>
+                  <Toggle
+                    label="Force Dark Mode"
+                    description="Always show dark mode for viewers"
+                    checked={form.forceDarkMode}
+                    onChange={(v) => handleChange("forceDarkMode", v)}
+                  />
+                  <Toggle
+                    label="Contact Form Enabled"
+                    description="Show the contact form on the About page"
+                    checked={form.contactEnabled}
+                    onChange={(v) => handleChange("contactEnabled", v)}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Profile Tab */}
+            {activeTab === "profile" && (
+              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
+                <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-4 border-b border-white/5 pb-2">
+                  Personal Information
+                </h4>
                 <Input
                   id="displayName"
                   label="Display Name"
@@ -261,55 +427,404 @@ export default function AdminSettingsPage() {
                   onChange={(e) => handleChange("tagline", e.target.value)}
                   placeholder="Senior Flutter Engineer"
                 />
-              </div>
-            </div>
-
-            {/* SEO */}
-            <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10">
-              <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-6 border-b border-white/5 pb-2">
-                SEO Metadata
-              </h4>
-              <div className="space-y-4">
                 <Input
-                  id="siteTitle"
-                  label="Site Title"
-                  value={form.siteTitle}
-                  onChange={(e) => handleChange("siteTitle", e.target.value)}
+                  id="location"
+                  label="Location"
+                  value={form.location}
+                  onChange={(e) => handleChange("location", e.target.value)}
+                  placeholder="San Francisco, CA"
+                />
+                <Input
+                  id="email"
+                  label="Email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => handleChange("email", e.target.value)}
+                  placeholder="hello@example.com"
+                />
+                <Input
+                  id="phone"
+                  label="Phone"
+                  value={form.phone}
+                  onChange={(e) => handleChange("phone", e.target.value)}
+                  placeholder="+1 (555) 123-4567"
+                />
+                <Input
+                  id="avatar"
+                  label="Avatar URL"
+                  value={form.avatar || ""}
+                  onChange={(e) => handleChange("avatar", e.target.value)}
+                  placeholder="https://example.com/avatar.jpg"
                 />
                 <div className="flex flex-col gap-2">
                   <label className="font-label-caps text-label-caps text-on-surface-variant">
-                    Meta Description
+                    Bio
                   </label>
                   <Textarea
-                    id="metaDescription"
-                    value={form.metaDescription}
-                    onChange={(e) => handleChange("metaDescription", e.target.value)}
-                    rows={3}
+                    id="bio"
+                    value={form.bio}
+                    onChange={(e) => handleChange("bio", e.target.value)}
+                    rows={4}
+                    placeholder="A short bio about yourself..."
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="font-label-caps text-label-caps text-on-surface-variant">
+                    About Page Content
+                  </label>
+                  <Textarea
+                    id="aboutContent"
+                    value={form.aboutContent}
+                    onChange={(e) => handleChange("aboutContent", e.target.value)}
+                    rows={6}
+                    placeholder="Full about section content..."
                   />
                 </div>
               </div>
-            </div>
-          </div>
+            )}
 
-          {/* Sidebar */}
-          <div className="lg:col-span-4 space-y-8">
-            {/* Social Links */}
-            <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10">
-              <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-2">
-                <h4 className="font-body-base text-body-base font-semibold text-on-surface">
-                  Social Links
-                </h4>
-                <button
-                  type="button"
-                  onClick={addSocialLink}
-                  className="text-primary hover:text-primary-fixed transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[20px]">add</span>
-                </button>
+            {/* Skills Tab */}
+            {activeTab === "skills" && (
+              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-4">
+                  <h4 className="font-body-base text-body-base font-semibold text-on-surface">
+                    Skills
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={addSkill}
+                    className="text-primary hover:text-primary-fixed transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add</span>
+                  </button>
+                </div>
+                {form.skills.length === 0 && (
+                  <p className="text-on-surface-variant text-sm text-center py-8">
+                    No skills added yet. Click + to add one.
+                  </p>
+                )}
+                {form.skills.map((skill, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-[#050505] border border-white/5 p-3 rounded-lg">
+                    <input
+                      type="text"
+                      value={skill.name}
+                      onChange={(e) => handleSkillChange(i, "name", e.target.value)}
+                      placeholder="Skill name"
+                      className="flex-1 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                    />
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        value={skill.level}
+                        onChange={(e) => handleSkillChange(i, "level", parseInt(e.target.value))}
+                        className="w-20 accent-primary"
+                      />
+                      <span className="font-code-sm text-code-sm text-on-surface-variant w-8 text-right">
+                        {skill.level}%
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeSkill(i)}
+                      className="text-on-surface-variant hover:text-error transition-colors flex-shrink-0"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">close</span>
+                    </button>
+                  </div>
+                ))}
               </div>
-              <div className="space-y-3">
+            )}
+
+            {/* Experience Tab */}
+            {activeTab === "experience" && (
+              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-4">
+                  <h4 className="font-body-base text-body-base font-semibold text-on-surface">
+                    Work Experience
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={addExperience}
+                    className="text-primary hover:text-primary-fixed transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add</span>
+                  </button>
+                </div>
+                {form.experience.length === 0 && (
+                  <p className="text-on-surface-variant text-sm text-center py-8">
+                    No experience entries yet. Click + to add one.
+                  </p>
+                )}
+                {form.experience.map((exp, i) => (
+                  <div key={i} className="bg-[#050505] border border-white/5 p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between items-start">
+                      <h5 className="font-code-sm text-code-sm font-semibold text-on-surface">
+                        {exp.role || "New Role"} {exp.current && <span className="text-tertiary ml-2">(Current)</span>}
+                      </h5>
+                      <button
+                        type="button"
+                        onClick={() => removeExperience(i)}
+                        className="text-on-surface-variant hover:text-error transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">close</span>
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        value={exp.role}
+                        onChange={(e) => handleExpChange(i, "role", e.target.value)}
+                        placeholder="Role (e.g. Lead Engineer)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={exp.company}
+                        onChange={(e) => handleExpChange(i, "company", e.target.value)}
+                        placeholder="Company"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <input
+                        type="text"
+                        value={exp.startDate}
+                        onChange={(e) => handleExpChange(i, "startDate", e.target.value)}
+                        placeholder="Start (e.g. 2021)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={exp.endDate || ""}
+                        onChange={(e) => handleExpChange(i, "endDate", e.target.value)}
+                        placeholder="End (e.g. 2024)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <label className="flex items-center gap-2 text-on-surface-variant font-code-sm text-code-sm">
+                        <input
+                          type="checkbox"
+                          checked={exp.current}
+                          onChange={(e) => handleExpChange(i, "current", e.target.checked)}
+                          className="accent-primary"
+                        />
+                        Current position
+                      </label>
+                    </div>
+                    <textarea
+                      value={exp.description}
+                      onChange={(e) => handleExpChange(i, "description", e.target.value)}
+                      placeholder="Describe your role and achievements..."
+                      rows={3}
+                      className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50 resize-none"
+                    />
+                    <input
+                      type="text"
+                      value={exp.technologies?.join(", ") || ""}
+                      onChange={(e) => handleExpChange(i, "technologies", e.target.value.split(", "))}
+                      placeholder="Technologies (comma separated)"
+                      className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Education Tab */}
+            {activeTab === "education" && (
+              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-4">
+                  <h4 className="font-body-base text-body-base font-semibold text-on-surface">
+                    Education
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={addEducation}
+                    className="text-primary hover:text-primary-fixed transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add</span>
+                  </button>
+                </div>
+                {form.education.length === 0 && (
+                  <p className="text-on-surface-variant text-sm text-center py-8">
+                    No education entries yet. Click + to add one.
+                  </p>
+                )}
+                {form.education.map((edu, i) => (
+                  <div key={i} className="bg-[#050505] border border-white/5 p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between items-start">
+                      <h5 className="font-code-sm text-code-sm font-semibold text-on-surface">
+                        {edu.degree || "New Degree"} {edu.current && <span className="text-tertiary ml-2">(Current)</span>}
+                      </h5>
+                      <button
+                        type="button"
+                        onClick={() => removeEducation(i)}
+                        className="text-on-surface-variant hover:text-error transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">close</span>
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        value={edu.institution}
+                        onChange={(e) => handleEduChange(i, "institution", e.target.value)}
+                        placeholder="Institution"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={edu.degree}
+                        onChange={(e) => handleEduChange(i, "degree", e.target.value)}
+                        placeholder="Degree (e.g. B.Sc.)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <input
+                        type="text"
+                        value={edu.field}
+                        onChange={(e) => handleEduChange(i, "field", e.target.value)}
+                        placeholder="Field (e.g. Computer Science)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={edu.startDate}
+                        onChange={(e) => handleEduChange(i, "startDate", e.target.value)}
+                        placeholder="Start (e.g. 2016)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={edu.endDate || ""}
+                        onChange={(e) => handleEduChange(i, "endDate", e.target.value)}
+                        placeholder="End (e.g. 2020)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                    </div>
+                    <label className="flex items-center gap-2 text-on-surface-variant font-code-sm text-code-sm">
+                      <input
+                        type="checkbox"
+                        checked={edu.current || false}
+                        onChange={(e) => handleEduChange(i, "current", e.target.checked)}
+                        className="accent-primary"
+                      />
+                      Currently enrolled
+                    </label>
+                    <textarea
+                      value={edu.description || ""}
+                      onChange={(e) => handleEduChange(i, "description", e.target.value)}
+                      placeholder="Additional details..."
+                      rows={2}
+                      className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50 resize-none"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Certifications Tab */}
+            {activeTab === "certifications" && (
+              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-4">
+                  <h4 className="font-body-base text-body-base font-semibold text-on-surface">
+                    Certifications
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={addCertification}
+                    className="text-primary hover:text-primary-fixed transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add</span>
+                  </button>
+                </div>
+                {form.certifications.length === 0 && (
+                  <p className="text-on-surface-variant text-sm text-center py-8">
+                    No certifications yet. Click + to add one.
+                  </p>
+                )}
+                {form.certifications.map((cert, i) => (
+                  <div key={i} className="bg-[#050505] border border-white/5 p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between items-start">
+                      <h5 className="font-code-sm text-code-sm font-semibold text-on-surface">
+                        {cert.name || "New Certification"}
+                      </h5>
+                      <button
+                        type="button"
+                        onClick={() => removeCertification(i)}
+                        className="text-on-surface-variant hover:text-error transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">close</span>
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        value={cert.name}
+                        onChange={(e) => handleCertChange(i, "name", e.target.value)}
+                        placeholder="Certification name"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={cert.issuer}
+                        onChange={(e) => handleCertChange(i, "issuer", e.target.value)}
+                        placeholder="Issuer (e.g. Google)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        value={cert.date}
+                        onChange={(e) => handleCertChange(i, "date", e.target.value)}
+                        placeholder="Date (e.g. 2023)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={cert.url || ""}
+                        onChange={(e) => handleCertChange(i, "url", e.target.value)}
+                        placeholder="Credential URL (optional)"
+                        className="bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                    </div>
+                    <textarea
+                      value={cert.description || ""}
+                      onChange={(e) => handleCertChange(i, "description", e.target.value)}
+                      placeholder="Description (optional)"
+                      rows={2}
+                      className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50 resize-none"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Social Links Tab */}
+            {activeTab === "social" && (
+              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-4">
+                  <h4 className="font-body-base text-body-base font-semibold text-on-surface">
+                    Social Links
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={addSocialLink}
+                    className="text-primary hover:text-primary-fixed transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">add</span>
+                  </button>
+                </div>
+                {form.socialLinks.length === 0 && (
+                  <p className="text-on-surface-variant text-sm text-center py-8">
+                    No social links yet. Click + to add one.
+                  </p>
+                )}
                 {form.socialLinks.map((link, i) => (
-                  <div key={i} className="flex flex-col gap-2 bg-[#050505] border border-white/5 p-3 rounded-lg">
+                  <div key={i} className="bg-[#050505] border border-white/5 p-3 rounded-lg space-y-2">
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-on-surface-variant text-[20px]">{link.icon || "link"}</span>
                       <input
@@ -323,8 +838,8 @@ export default function AdminSettingsPage() {
                         type="text"
                         value={link.icon}
                         onChange={(e) => handleSocialChange(i, "icon", e.target.value)}
-                        placeholder="Icon name"
-                        className="w-24 bg-transparent border border-white/5 rounded text-on-surface-variant font-code-sm text-[10px] px-2 py-1 focus:ring-0 outline-none text-center"
+                        placeholder="Icon"
+                        className="w-20 bg-transparent border border-white/5 rounded text-on-surface-variant font-code-sm text-[10px] px-2 py-1 text-center outline-none"
                         title="Material Symbols icon name"
                       />
                       <button
@@ -339,44 +854,41 @@ export default function AdminSettingsPage() {
                       type="text"
                       value={link.url}
                       onChange={(e) => handleSocialChange(i, "url", e.target.value)}
-                      placeholder="URL or phone (e.g. https://github.com/... or tel:+1234567890)"
-                      className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 focus:ring-0 outline-none"
+                      placeholder="URL or phone"
+                      className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none"
                     />
                   </div>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Preferences */}
-            <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10">
-              <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-6 border-b border-white/5 pb-2">
-                Preferences
+          {/* Sidebar actions */}
+          <div className="lg:col-span-4">
+            <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 sticky top-24 space-y-4">
+              <h4 className="font-body-base text-body-base font-semibold text-on-surface border-b border-white/5 pb-2">
+                Actions
               </h4>
-              <Toggle
-                label="Force Dark Mode"
-                description="Always show dark mode for viewers"
-                checked={form.forceDarkMode}
-                onChange={(v) => handleChange("forceDarkMode", v)}
-              />
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-4 pt-4">
-              <button
-                type="button"
-                onClick={() => window.location.reload()}
-                className="flex-1 py-3 px-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-lg hover:bg-white/5 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleSave}
-                disabled={saving}
-                className="flex-1 py-3 px-4 bg-primary-container text-on-primary-container font-code-sm text-code-sm rounded-lg inner-glow hover:opacity-90 transition-opacity disabled:opacity-50"
-              >
-                {saving ? "Saving..." : "Save Changes"}
-              </button>
+              <p className="font-code-sm text-code-sm text-on-surface-variant">
+                Tab: <span className="text-on-surface capitalize">{activeTab}</span>
+              </p>
+              <div className="flex gap-4 pt-2">
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="flex-1 py-3 px-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="flex-1 py-3 px-4 bg-primary-container text-on-primary-container font-code-sm text-code-sm rounded-lg inner-glow hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {saving ? "Saving..." : "Save All"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

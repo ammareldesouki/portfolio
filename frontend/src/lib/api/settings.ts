@@ -7,15 +7,60 @@ export interface SocialLink {
   url: string;
 }
 
+export interface Skill {
+  name: string;
+  level: number;
+}
+
+export interface Experience {
+  company: string;
+  role: string;
+  startDate: string;
+  endDate?: string;
+  current: boolean;
+  description: string;
+  technologies: string[];
+}
+
+export interface Education {
+  institution: string;
+  degree: string;
+  field: string;
+  startDate: string;
+  endDate?: string;
+  current: boolean;
+  description?: string;
+}
+
+export interface Certification {
+  name: string;
+  issuer: string;
+  date: string;
+  url?: string;
+  description?: string;
+}
+
 export interface Settings {
   _id: string;
   displayName: string;
   tagline: string;
   avatar?: string;
+  favicon?: string;
   siteTitle: string;
   metaDescription: string;
+  bio: string;
+  aboutContent: string;
+  location: string;
+  email: string;
+  phone: string;
+  resumeUrl?: string;
+  skills: Skill[];
   socialLinks: SocialLink[];
+  experience: Experience[];
+  education: Education[];
+  certifications: Certification[];
   forceDarkMode: boolean;
+  contactEnabled: boolean;
 }
 
 export const settingsApi = {

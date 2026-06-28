@@ -184,10 +184,15 @@ export default function AdminSettingsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await settingsApi.update(form);
-      alert("Settings saved");
+      const res = await settingsApi.update(form);
+      if (res.success) {
+        alert("Settings saved");
+      } else {
+        alert("Error: " + (res.message || "Unknown error"));
+      }
     } catch (err) {
-      console.error("Failed to save settings", err);
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      alert("Failed to save: " + msg);
     } finally {
       setSaving(false);
     }

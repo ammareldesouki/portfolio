@@ -8,7 +8,9 @@ export async function GET() {
   try {
     await connectDatabase();
     const settings = await settingsService.getPublic();
-    return sendSuccess(settings);
+    const response = sendSuccess(settings);
+    response.headers.set('Cache-Control', 'no-store, must-revalidate');
+    return response;
   } catch {
     return sendError('Internal server error', 500);
   }

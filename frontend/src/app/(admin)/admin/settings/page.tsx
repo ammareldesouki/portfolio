@@ -281,7 +281,7 @@ export default function AdminSettingsPage() {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*,video/*"
+              accept="image/*,video/*,application/pdf"
               onChange={handleFileUpload}
               className="hidden"
             />
@@ -309,6 +309,12 @@ export default function AdminSettingsPage() {
                     <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
                       <span className="material-symbols-outlined text-4xl text-on-surface-variant">
                         play_circle
+                      </span>
+                    </div>
+                  ) : asset.format === "pdf" ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
+                      <span className="material-symbols-outlined text-4xl text-on-surface-variant">
+                        picture_as_pdf
                       </span>
                     </div>
                   ) : (

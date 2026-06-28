@@ -188,10 +188,11 @@ export default function AdminSettingsPage() {
       if (res.success) {
         alert("Settings saved");
       } else {
-        alert("Error: " + (res.message || "Unknown error"));
+        alert("Error: " + (res.error || res.message || "Unknown error"));
       }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Unknown error";
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { error?: string } }; message?: string };
+      const msg = axiosErr.response?.data?.error || axiosErr.message || "Unknown error";
       alert("Failed to save: " + msg);
     } finally {
       setSaving(false);

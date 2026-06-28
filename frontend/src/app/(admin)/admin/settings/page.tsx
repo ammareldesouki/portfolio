@@ -318,13 +318,21 @@ export default function AdminSettingsPage() {
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                    <div className="flex justify-between items-center w-full">
-                      <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm truncate max-w-[70%]">
-                        {asset.original_filename}.{asset.format}
-                      </span>
-                      <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">
-                        {formatBytes(asset.bytes)}
-                      </span>
+                    <div className="flex flex-col gap-1 w-full">
+                      <div className="flex justify-between items-center w-full">
+                        <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm truncate max-w-[70%]">
+                          {asset.original_filename}.{asset.format}
+                        </span>
+                        <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                          {formatBytes(asset.bytes)}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => { navigator.clipboard.writeText(asset.secure_url); alert("URL copied: " + asset.secure_url.slice(0, 30) + "..."); }}
+                        className="font-code-sm text-[10px] text-primary bg-primary/20 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary/30 transition-colors"
+                      >
+                        Copy URL
+                      </button>
                     </div>
                     <button
                       onClick={() => handleDeleteMedia(asset.public_id)}

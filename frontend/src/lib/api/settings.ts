@@ -61,6 +61,10 @@ export interface Settings {
   certifications: Certification[];
   forceDarkMode: boolean;
   contactEnabled: boolean;
+  showSkills: boolean;
+  showExperience: boolean;
+  showEducation: boolean;
+  showCertifications: boolean;
 }
 
 export const settingsApi = {

@@ -48,6 +48,10 @@ export default function AdminSettingsPage() {
     certifications: [],
     forceDarkMode: true,
     contactEnabled: true,
+    showSkills: true,
+    showExperience: true,
+    showEducation: true,
+    showCertifications: true,
   });
 
   useEffect(() => {
@@ -79,6 +83,10 @@ export default function AdminSettingsPage() {
             certifications: s.certifications || [],
             forceDarkMode: s.forceDarkMode ?? true,
             contactEnabled: s.contactEnabled ?? true,
+            showSkills: s.showSkills ?? true,
+            showExperience: s.showExperience ?? true,
+            showEducation: s.showEducation ?? true,
+            showCertifications: s.showCertifications ?? true,
           });
         }
         setMedia(mediaRes.data || []);
@@ -403,6 +411,38 @@ export default function AdminSettingsPage() {
                     description="Show the contact form on the About page"
                     checked={form.contactEnabled}
                     onChange={(v) => handleChange("contactEnabled", v)}
+                  />
+                </div>
+                <div className="space-y-4 pt-4 border-t border-white/5">
+                  <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-4">
+                    Section Visibility
+                  </h4>
+                  <p className="font-code-sm text-code-sm text-on-surface-variant mb-2">
+                    Toggle which sections appear on the public About page
+                  </p>
+                  <Toggle
+                    label="Show Skills"
+                    description="Display the skills section on About page"
+                    checked={form.showSkills}
+                    onChange={(v) => handleChange("showSkills", v)}
+                  />
+                  <Toggle
+                    label="Show Experience"
+                    description="Display the experience section"
+                    checked={form.showExperience}
+                    onChange={(v) => handleChange("showExperience", v)}
+                  />
+                  <Toggle
+                    label="Show Education"
+                    description="Display the education section"
+                    checked={form.showEducation}
+                    onChange={(v) => handleChange("showEducation", v)}
+                  />
+                  <Toggle
+                    label="Show Certifications"
+                    description="Display the certifications section"
+                    checked={form.showCertifications}
+                    onChange={(v) => handleChange("showCertifications", v)}
                   />
                 </div>
               </div>
@@ -838,9 +878,9 @@ export default function AdminSettingsPage() {
                         type="text"
                         value={link.icon}
                         onChange={(e) => handleSocialChange(i, "icon", e.target.value)}
-                        placeholder="Icon"
-                        className="w-20 bg-transparent border border-white/5 rounded text-on-surface-variant font-code-sm text-[10px] px-2 py-1 text-center outline-none"
-                        title="Material Symbols icon name"
+                        placeholder="Icon or URL"
+                        className="w-28 bg-transparent border border-white/5 rounded text-on-surface-variant font-code-sm text-[10px] px-2 py-1 text-center outline-none"
+                        title="Material Symbols name (e.g. github) or image URL (e.g. https://...)"
                       />
                       <button
                         type="button"

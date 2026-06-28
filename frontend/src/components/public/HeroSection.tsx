@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { settingsApi, Settings } from "@/lib/api/settings";
+import { SocialIcon } from "@/components/ui/SocialIcon";
 
 export function HeroSection() {
   const [settings, setSettings] = useState<Settings | null>(null);
@@ -45,9 +46,7 @@ export function HeroSection() {
                 rel="noopener noreferrer"
                 className="btn-ghost px-8 py-4 rounded-xl font-code-sm text-code-sm font-bold tracking-wide transition-all flex items-center gap-2"
               >
-                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                  {link.icon || "open_in_new"}
-                </span>
+                <SocialIcon icon={link.icon} name={link.name} className="text-[18px]" />
                 <span>{link.name || link.url}</span>
               </a>
             ))}

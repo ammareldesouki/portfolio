@@ -59,6 +59,10 @@ export interface ISettings extends Document {
   certifications: ICertification[];
   forceDarkMode: boolean;
   contactEnabled: boolean;
+  showSkills: boolean;
+  showExperience: boolean;
+  showEducation: boolean;
+  showCertifications: boolean;
 }
 
 const SettingsSchema = new Schema<ISettings>(
@@ -104,6 +108,10 @@ const SettingsSchema = new Schema<ISettings>(
     }],
     forceDarkMode: { type: Boolean, default: true },
     contactEnabled: { type: Boolean, default: true },
+    showSkills: { type: Boolean, default: true },
+    showExperience: { type: Boolean, default: true },
+    showEducation: { type: Boolean, default: true },
+    showCertifications: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

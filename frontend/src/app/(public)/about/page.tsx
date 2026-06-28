@@ -7,10 +7,10 @@ import { contactApi } from "@/lib/api/contact";
 import { settingsApi } from "@/lib/api/settings";
 import type { Settings } from "@/lib/api/settings";
 
-const resumeSections = [
-  { id: "experience", label: "01 // Experience" },
-  { id: "education", label: "02 // Education" },
-  { id: "certifications", label: "03 // Certifications" },
+const allResumeSections = [
+  { id: "experience", label: "01 // Experience", key: "showExperience" as const },
+  { id: "education", label: "02 // Education", key: "showEducation" as const },
+  { id: "certifications", label: "03 // Certifications", key: "showCertifications" as const },
 ];
 
 export default function AboutPage() {
@@ -26,6 +26,17 @@ export default function AboutPage() {
     }).catch(() => {});
   }, []);
 
+  const s = settings;
+
+  const resumeSections = allResumeSections.filter((sec) => s ? (s as unknown as Record<string, boolean | undefined>)[sec.key] !== false : true);
+
+  useEffect(() => {
+    if (s && resumeSections.length > 0 && !resumeSections.find((sec) => sec.id === activeSection)) {
+      setActiveSection(resumeSections[0].id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [s]);
+
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setContactError("");
@@ -37,8 +48,6 @@ export default function AboutPage() {
       setContactError("Failed to send message. Try again.");
     }
   };
-
-  const s = settings;
 
   return (
     <main className="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-content mx-auto space-y-32">
@@ -72,7 +81,7 @@ export default function AboutPage() {
             </div>
           )}
 
-          {s?.skills && s.skills.length > 0 && (
+          {s?.showSkills !== false && s?.skills && s.skills.length > 0 && (
             <div className="space-y-3">
               <h3 className="font-label-caps text-label-caps text-tertiary">
                 Skills
@@ -112,6 +121,7 @@ export default function AboutPage() {
       </section>
 
       {/* Resume Section */}
+      {resumeSections.length > 0 && (
       <section className="space-y-12" id="resume">
         <div className="flex justify-between items-end border-b border-white/10 pb-4">
           <h2 className="font-headline-md text-headline-md text-on-surface">
@@ -252,8 +262,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Contact */}
+      )}
       {s?.contactEnabled !== false && (
         <section className="max-w-3xl mx-auto space-y-12" id="contact">
           <div className="text-center space-y-4">

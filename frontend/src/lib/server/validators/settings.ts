@@ -49,4 +49,8 @@ export const updateSettingsSchema = z.object({
   })).optional(),
   forceDarkMode: z.boolean().optional(),
   contactEnabled: z.boolean().optional(),
+  showSkills: z.boolean().optional(),
+  showExperience: z.boolean().optional(),
+  showEducation: z.boolean().optional(),
+  showCertifications: z.boolean().optional(),
 });

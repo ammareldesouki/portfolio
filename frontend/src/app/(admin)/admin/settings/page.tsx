@@ -209,6 +209,7 @@ export default function AdminSettingsPage() {
       setMedia(mediaRes.data || []);
     } catch (err) {
       console.error("Upload failed", err);
+      alert("Upload failed: " + (err instanceof Error ? err.message : "Unknown error"));
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

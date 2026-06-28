@@ -873,7 +873,17 @@ export default function AdminSettingsPage() {
                   <div key={i} className="bg-[#050505] border border-white/5 p-4 rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className="material-symbols-outlined text-on-surface-variant text-[20px]">{link.icon || "link"}</span>
+                        <div className="w-10 h-10 rounded-lg bg-[#0A0C10] border border-white/5 flex items-center justify-center overflow-hidden">
+                          {link.icon ? (
+                            link.icon.startsWith("http") ? (
+                              <img src={link.icon} alt="" className="w-6 h-6 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                            ) : (
+                              <span className="material-symbols-outlined text-on-surface-variant">{link.icon}</span>
+                            )
+                          ) : (
+                            <span className="text-on-surface-variant font-bold text-sm">{link.name ? link.name.charAt(0).toUpperCase() : "?"}</span>
+                          )}
+                        </div>
                         <input
                           type="text"
                           value={link.name}
@@ -902,22 +912,32 @@ export default function AdminSettingsPage() {
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <input
-                        type="text"
-                        value={link.icon}
-                        onChange={(e) => handleSocialChange(i, "icon", e.target.value)}
-                        placeholder="Icon: Material Symbols name (e.g. code, email, call) or image URL (https://...)"
-                        className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-3 py-1.5 outline-none focus:border-primary/50"
-                      />
-                      <input
-                        type="text"
-                        value={link.url}
-                        onChange={(e) => handleSocialChange(i, "url", e.target.value)}
+                      <div>
+                        <label className="font-code-sm text-[10px] text-on-surface-variant mb-1 block">
+                          Icon — paste an image URL or type a Material Symbols name
+                        </label>
+                        <input
+                          type="text"
+                          value={link.icon}
+                          onChange={(e) => handleSocialChange(i, "icon", e.target.value)}
+                          placeholder="e.g. https://...png or code, email, call"
+                          className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-3 py-1.5 outline-none focus:border-primary/50"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-code-sm text-[10px] text-on-surface-variant mb-1 block">
+                          Link URL — where this icon points to
+                        </label>
+                        <input
+                          type="text"
+                          value={link.url}
+                          onChange={(e) => handleSocialChange(i, "url", e.target.value)}
                         placeholder="URL (e.g. https://github.com/username)"
                         className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-3 py-1.5 outline-none focus:border-primary/50"
                       />
                     </div>
                   </div>
+                </div>
                 ))}
               </div>
             )}

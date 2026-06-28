@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin - Edit Project</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#393939",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#aec6ff",
+                      "surface": "#131314",
+                      "surface-container": "#1f2020",
+                      "primary-container": "#0070f3",
+                      "secondary-fixed-dim": "#c6c6cc",
+                      "on-surface": "#e4e2e2",
+                      "on-primary-fixed-variant": "#004397",
+                      "background": "#131314",
+                      "tertiary-fixed-dim": "#48ddbc",
+                      "surface-container-highest": "#343535",
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-surface": "#e4e2e2",
+                      "on-secondary-fixed-variant": "#45474b",
+                      "inverse-on-surface": "#303031",
+                      "tertiary-container": "#00866f",
+                      "outline-variant": "#414754",
+                      "primary": "#aec6ff",
+                      "surface-dim": "#131314",
+                      "on-secondary-container": "#b7b8be",
+                      "on-tertiary": "#00382d",
+                      "on-tertiary-fixed-variant": "#005142",
+                      "secondary-container": "#47494e",
+                      "outline": "#8b90a0",
+                      "tertiary": "#48ddbc",
+                      "surface-tint": "#aec6ff",
+                      "on-primary-fixed": "#001a43",
+                      "surface-container-high": "#292a2a",
+                      "surface-container-lowest": "#0d0e0e",
+                      "secondary": "#c6c6cc",
+                      "on-tertiary-fixed": "#002019",
+                      "secondary-fixed": "#e2e2e8",
+                      "surface-variant": "#343535",
+                      "on-primary": "#002e6b",
+                      "on-secondary-fixed": "#1a1c20",
+                      "tertiary-fixed": "#6bfad8",
+                      "on-primary-container": "#ffffff",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#0059c5",
+                      "on-tertiary-container": "#ffffff",
+                      "on-surface-variant": "#c1c6d7",
+                      "error": "#ffb4ab",
+                      "on-secondary": "#2f3035",
+                      "error-container": "#93000a",
+                      "on-background": "#e4e2e2",
+                      "surface-container-low": "#1b1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "sidebar-width": "280px",
+                      "unit": "4px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "max-width-content": "1200px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": [
+                              "Geist"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg-mobile": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Base styles to ensure consistency with custom fonts */
+        body {
+            font-feature-settings: "cv11", "ss01";
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Inner glow border utility */
+        .inner-glow {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hide scrollbar for clean internal panels */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-base text-body-base overflow-x-hidden flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- JSON Component: SideNavBar -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low border-r border-white/5 h-screen w-sidebar-width fixed left-0 top-0 flex flex-col p-4 gap-2 z-40 hidden md:flex">
+<!-- Header -->
+<div class="flex items-center gap-4 px-2 py-4 mb-6">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 shrink-0">
+<img alt="Admin Profile" class="w-full h-full object-cover" data-alt="A macro photography shot of a sleek, dark metallic server node with glowing electric blue fiber optic cables, symbolizing a high-end admin console interface. The lighting is cinematic, casting deep shadows that contrast with the intense neon blue light, evoking a sense of advanced technology and precision engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD98lBwWxPMoJNKNzUncUnQSSP4jWALi_lWHfx7K-QYhf6mjHYcx-RdN9sc-RiU0y3m0-BqkEL7Vjo2mh0IJLcasBbp-fP5qEl9mhWtKhM-0ASsN2mJXsglNR8shmzYT3XIRTvENdh2ajUh6wPu9WYGHFpt1ukURzRb7TMhtxyNtz9_MF_mUSjV1MR76oomLKjEGAFUUTuAMJJTt6F3sTDMTezIVX2ql-kTQSl1kS2JC5ge9qrZyiQdnyvoJXjUl_rGySFk9DvDM9A"/>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md !text-lg text-primary tracking-tight">Admin Console</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Management Suite</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col gap-1 flex-1">
+<!-- Dashboard -->
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/20 transition-all duration-200 ease-in-out rounded-lg font-code-sm text-code-sm group" href="#">
+<span class="material-symbols-outlined text-xl opacity-70 group-hover:opacity-100 group-hover:text-primary transition-colors">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Projects (ACTIVE - based on intent "Add/Edit Project Form") -->
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold transition-all duration-200 ease-in-out font-code-sm text-code-sm" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span>Projects</span>
+</a>
+<!-- Skills -->
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/20 transition-all duration-200 ease-in-out rounded-lg font-code-sm text-code-sm group" href="#">
+<span class="material-symbols-outlined text-xl opacity-70 group-hover:opacity-100 group-hover:text-primary transition-colors">terminal</span>
+<span>Skills</span>
+</a>
+<!-- Experience -->
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/20 transition-all duration-200 ease-in-out rounded-lg font-code-sm text-code-sm group" href="#">
+<span class="material-symbols-outlined text-xl opacity-70 group-hover:opacity-100 group-hover:text-primary transition-colors">work_history</span>
+<span>Experience</span>
+</a>
+<!-- Media -->
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/20 transition-all duration-200 ease-in-out rounded-lg font-code-sm text-code-sm group" href="#">
+<span class="material-symbols-outlined text-xl opacity-70 group-hover:opacity-100 group-hover:text-primary transition-colors">perm_media</span>
+<span>Media</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/20 transition-all duration-200 ease-in-out rounded-lg font-code-sm text-code-sm group mt-auto" href="#">
+<span class="material-symbols-outlined text-xl opacity-70 group-hover:opacity-100 group-hover:text-primary transition-colors">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<!-- CTA -->
+<button class="mt-4 w-full py-3 px-4 bg-surface-bright border border-white/10 rounded-lg font-code-sm text-code-sm text-primary hover:bg-surface-variant transition-all duration-200 flex items-center justify-center gap-2 group inner-glow">
+<span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">add</span>
+            Add New Project
+        </button>
+</nav>
+<!-- Main Content Wrapper -->
+<main class="md:ml-sidebar-width w-full min-h-screen flex flex-col relative">
+<!-- JSON Component: TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gutter py-4 sticky top-0 z-30 w-full transition-all">
+<!-- Leading -->
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant hover:bg-surface-variant transition-all p-2 rounded-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Dashboard</h1>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:bg-surface-variant transition-all p-2 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary-container rounded-full border border-surface"></span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-variant transition-all p-2 rounded-lg">
+<span class="material-symbols-outlined">apps</span>
+</button>
+<div class="w-8 h-8 rounded-full ml-2 border border-white/10 overflow-hidden cursor-pointer">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A sleek, minimalist digital avatar of a human face rendered in wireframe style using glowing electric blue lines on a pure black background. The image evokes a sense of developer-focused precision and modern cybersecurity aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwJX5qTQLsAYYRxgrHoXNDnLCdAGTD4HiLNfzr17Y7xqMYiekdqZcgBE_ISgaSt6_bVUgLzyBZDJpoxWTJ-aMzUKFgtH5qtZZ5M9RjHtDXKwBWWoghPMcldxXansp3h5gD4zGRHyC5Dwc6Pu0m2ScvQ_dc5wYeEejLILZc31_1OMbsFK7jx24YKUpbxtuoeByb1GC0uAASGueiHoZL7hJmQuqkUksMu-0RZiKyX-yUIjeqkV2pnybv9jZ2H8RcruQ868-AvKGGeuM"/>
+</div>
+</div>
+</header>
+<!-- Canvas Area -->
+<div class="flex-1 p-margin-mobile md:p-margin-desktop w-full max-w-max-width-content mx-auto relative z-10">
+<!-- Breadcrumbs / Page Header -->
+<div class="mb-8">
+<div class="flex items-center gap-2 font-code-sm text-code-sm text-on-surface-variant mb-2">
+<a class="hover:text-primary transition-colors" href="#">Projects</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-primary">Edit Configuration</span>
+</div>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tighter">
+                    Nexus Core UI
+                </h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-2 max-w-2xl">
+                    Configure project details, manage deployment links, and update media assets for the portfolio presentation.
+                </p>
+</div>
+<!-- Form Container (Glassmorphic Bento Grid style) -->
+<div class="bg-surface border border-white/10 rounded-2xl shadow-2xl overflow-hidden relative inner-glow">
+<!-- Ambient Background Glow in Container -->
+<div class="absolute -top-40 -right-40 w-96 h-96 bg-primary-container/10 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Tabs Header -->
+<div class="flex border-b border-white/5 px-6 pt-4 gap-8 overflow-x-auto no-scrollbar relative z-10">
+<button class="pb-4 font-code-sm text-code-sm text-primary border-b-2 border-primary transition-colors" data-tab-target="details">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span>
+                            Details
+                        </span>
+</button>
+<button class="pb-4 font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors" data-tab-target="links">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">link</span>
+                            Links
+                        </span>
+</button>
+<button class="pb-4 font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors" data-tab-target="media">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">imagesmode</span>
+                            Media
+                        </span>
+</button>
+<button class="pb-4 font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors" data-tab-target="tech">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">code</span>
+                            Tech Stack
+                        </span>
+</button>
+</div>
+<form class="relative z-10">
+<!-- Tab Content: Details (Active) -->
+<div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8" id="tab-details">
+<!-- Left Column: Primary Info -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Input Group: Name -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="projectName">Project Name <span class="text-error">*</span></label>
+<input class="bg-background border border-white/10 rounded-xl px-4 py-3 font-body-base text-body-base text-on-surface focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-on-surface-variant/50 inner-glow" id="projectName" placeholder="e.g. Finance Dashboard" type="text" value="Nexus Core UI"/>
+</div>
+<!-- Input Group: Description -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="projectDesc">Description</label>
+<textarea class="bg-background border border-white/10 rounded-xl px-4 py-3 font-body-base text-body-base text-on-surface focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-on-surface-variant/50 inner-glow resize-none" id="projectDesc" placeholder="Provide a comprehensive overview of the project, its goals, and the problems it solves." rows="5">A high-performance, accessible, and highly customizable UI component library built for enterprise-grade Flutter applications. Focuses on developer ergonomics and strict design system adherence.</textarea>
+<div class="flex justify-between items-center mt-1">
+<span class="font-code-sm text-[10px] text-on-surface-variant/70">Supports Markdown formatting</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant/70">184 / 500</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Meta Info -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Input Group: Status -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="projectStatus">Status</label>
+<div class="relative">
+<select class="appearance-none w-full bg-background border border-white/10 rounded-xl px-4 py-3 font-body-base text-body-base text-on-surface focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all inner-glow cursor-pointer" id="projectStatus">
+<option value="draft">Draft</option>
+<option value="in_progress">In Progress</option>
+<option selected="" value="published">Published</option>
+<option value="archived">Archived</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Input Group: Category -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="projectCategory">Category</label>
+<div class="relative">
+<select class="appearance-none w-full bg-background border border-white/10 rounded-xl px-4 py-3 font-body-base text-body-base text-on-surface focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all inner-glow cursor-pointer" id="projectCategory">
+<option value="mobile">Mobile Application</option>
+<option value="web">Web Platform</option>
+<option selected="" value="library">Open Source Library</option>
+<option value="tooling">Developer Tooling</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Read-only stats block (demonstrating sophisticated layout) -->
+<div class="mt-4 p-4 rounded-xl bg-surface-container-lowest border border-white/5 flex flex-col gap-3">
+<span class="font-label-caps text-label-caps text-on-surface-variant border-b border-white/5 pb-2">Record Metadata</span>
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Created</span>
+<span class="font-code-sm text-code-sm text-on-surface">Oct 12, 2023</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Last Modified</span>
+<span class="font-code-sm text-code-sm text-on-surface">2 hrs ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Form Footer Actions -->
+<div class="p-6 md:p-8 border-t border-white/5 bg-surface-container-lowest flex flex-col-reverse md:flex-row justify-between items-center gap-4">
+<button class="w-full md:w-auto px-6 py-3 rounded-xl border border-white/10 text-on-surface-variant font-code-sm text-code-sm hover:text-on-surface hover:bg-surface transition-all" type="button">
+                            Cancel
+                        </button>
+<button class="w-full md:w-auto px-8 py-3 rounded-xl bg-primary-container text-on-primary-container font-code-sm text-code-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity inner-glow shadow-[0_0_20px_rgba(0,112,243,0.3)]" type="submit">
+<span class="material-symbols-outlined text-sm">save</span>
+                            Save Changes
+                        </button>
+</div>
+</form>
+</div>
+<!-- Spacer for bottom padding -->
+<div class="h-24 w-full"></div>
+</div>
+</main>
+</body></html>

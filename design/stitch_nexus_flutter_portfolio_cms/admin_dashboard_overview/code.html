@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Dashboard Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#393939",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#aec6ff",
+                        "surface": "#131314",
+                        "surface-container": "#1f2020",
+                        "primary-container": "#0070f3",
+                        "secondary-fixed-dim": "#c6c6cc",
+                        "on-surface": "#e4e2e2",
+                        "on-primary-fixed-variant": "#004397",
+                        "background": "#131314",
+                        "tertiary-fixed-dim": "#48ddbc",
+                        "surface-container-highest": "#343535",
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-surface": "#e4e2e2",
+                        "on-secondary-fixed-variant": "#45474b",
+                        "inverse-on-surface": "#303031",
+                        "tertiary-container": "#00866f",
+                        "outline-variant": "#414754",
+                        "primary": "#aec6ff",
+                        "surface-dim": "#131314",
+                        "on-secondary-container": "#b7b8be",
+                        "on-tertiary": "#00382d",
+                        "on-tertiary-fixed-variant": "#005142",
+                        "secondary-container": "#47494e",
+                        "outline": "#8b90a0",
+                        "tertiary": "#48ddbc",
+                        "surface-tint": "#aec6ff",
+                        "on-primary-fixed": "#001a43",
+                        "surface-container-high": "#292a2a",
+                        "surface-container-lowest": "#0d0e0e",
+                        "secondary": "#c6c6cc",
+                        "on-tertiary-fixed": "#002019",
+                        "secondary-fixed": "#e2e2e8",
+                        "surface-variant": "#343535",
+                        "on-primary": "#002e6b",
+                        "on-secondary-fixed": "#1a1c20",
+                        "tertiary-fixed": "#6bfad8",
+                        "on-primary-container": "#ffffff",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#0059c5",
+                        "on-tertiary-container": "#ffffff",
+                        "on-surface-variant": "#c1c6d7",
+                        "error": "#ffb4ab",
+                        "on-secondary": "#2f3035",
+                        "error-container": "#93000a",
+                        "on-background": "#e4e2e2",
+                        "surface-container-low": "#1b1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "sidebar-width": "280px",
+                        "unit": "4px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "max-width-content": "1200px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": [
+                            "Geist"
+                        ],
+                        "code-sm": [
+                            "JetBrains Mono"
+                        ],
+                        "display-lg": [
+                            "Geist"
+                        ],
+                        "body-base": [
+                            "Inter"
+                        ],
+                        "headline-md": [
+                            "Geist"
+                        ],
+                        "label-caps": [
+                            "JetBrains Mono"
+                        ]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": [
+                            "40px",
+                            {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "code-sm": [
+                            "13px",
+                            {
+                                "lineHeight": "1.5",
+                                "letterSpacing": "0em",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "display-lg": [
+                            "64px",
+                            {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "body-base": [
+                            "16px",
+                            {
+                                "lineHeight": "1.6",
+                                "letterSpacing": "0em",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-md": [
+                            "32px",
+                            {
+                                "lineHeight": "1.3",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "label-caps": [
+                            "11px",
+                            {
+                                "lineHeight": "1",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "600"
+                            }
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Base styles from guidance */
+        body {
+            background-color: #050505;
+        }
+        .luxury-card {
+            background-color: #0A0C10;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .luxury-card:hover {
+            border-color: #aec6ff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+        .luxury-button-primary {
+            background-color: #0070f3;
+            color: #ffffff;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        .luxury-button-secondary {
+            background-color: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: border-color 0.3s ease;
+        }
+        .luxury-button-secondary:hover {
+            border-color: rgba(255,255,255,0.3);
+        }
+        .tech-chip {
+            background-color: #16181D;
+            color: #666666;
+        }
+    </style>
+</head>
+<body class="text-on-background font-body-base text-body-base antialiased min-h-screen flex">
+<!-- SideNavBar (from JSON) -->
+<aside class="bg-surface-container-low dark:bg-surface-container-low text-primary dark:text-primary font-code-sm text-code-sm border-r border-white/5 h-screen w-sidebar-width fixed left-0 top-0 flex flex-col p-4 gap-2 z-40 hidden md:flex">
+<div class="mb-8 px-4">
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight font-bold">Admin Console</h1>
+<p class="text-on-surface-variant font-code-sm text-code-sm mt-1">Management Suite</p>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<!-- Active: Dashboard -->
+<a class="bg-primary-container text-on-primary-container rounded-lg font-bold flex items-center gap-3 px-4 py-3 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-bright/10 hover:bg-surface-bright/20 transition-all rounded-lg font-medium flex items-center gap-3 px-4 py-3 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Projects</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-bright/10 hover:bg-surface-bright/20 transition-all rounded-lg font-medium flex items-center gap-3 px-4 py-3 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span>Skills</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-bright/10 hover:bg-surface-bright/20 transition-all rounded-lg font-medium flex items-center gap-3 px-4 py-3 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">work_history</span>
+<span>Experience</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-bright/10 hover:bg-surface-bright/20 transition-all rounded-lg font-medium flex items-center gap-3 px-4 py-3 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">perm_media</span>
+<span>Media</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-bright/10 hover:bg-surface-bright/20 transition-all rounded-lg font-medium flex items-center gap-3 px-4 py-3 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-white/5">
+<button class="w-full luxury-button-primary rounded-lg py-3 px-4 font-bold flex items-center justify-center gap-2 transition-transform active:scale-95 duration-200">
+<span class="material-symbols-outlined">add</span>
+                Add New Project
+            </button>
+<div class="flex items-center gap-3 mt-4 px-2">
+<img alt="Admin Profile" class="w-10 h-10 rounded-full border border-white/10 object-cover" data-alt="A small, stylized profile avatar of a developer in a dark environment, illuminated by soft blue light, wearing a headset. minimalist cyberpunk aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2r4ZRYMhpcLh-Ytje4nB3_7wXDVBJMIsdUJSnAjllvWA5tfEGdn8MyHNxnRD09XNIDPqdAjth0p09_2F5-6L4mTgI4s4B0bHYKyrgI2szRznlpRlSnywiffOpYUt7f1PYC0pOm9nfW8OK66dCdeMpElBAPlX7xzpU2w5ccirbjGdRD0GUZjwMXArNguryoTsGP15Y-4QurWdykT3POn0taU0565cZiEHzZ9ZCERej_xW80EVD0M6C9Di46Xg-bzgIa5Gjh-xMTsc"/>
+<div>
+<p class="font-bold text-on-surface">Admin User</p>
+<p class="text-on-surface-variant text-xs">admin@flutter.dev</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 md:ml-sidebar-width flex flex-col min-h-screen">
+<!-- TopAppBar (from JSON) -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/5 docked full-width top flex justify-between items-center px-gutter py-4 sticky top-0 z-30 transition-all">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md text-primary tracking-tighter font-extrabold hidden md:block">Dashboard</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-bright/10">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-bright/10">
+<span class="material-symbols-outlined">apps</span>
+</button>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto">
+<!-- Analytics Cards (Bento style grid) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-12">
+<div class="luxury-card rounded-xl p-6 flex flex-col justify-between h-40 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all"></div>
+<div class="flex justify-between items-start z-10">
+<p class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-widest">Total Projects</p>
+<span class="material-symbols-outlined text-primary">folder_open</span>
+</div>
+<div class="z-10">
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">42</h3>
+<p class="text-tertiary font-code-sm text-xs mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +3 this month
+                        </p>
+</div>
+</div>
+<div class="luxury-card rounded-xl p-6 flex flex-col justify-between h-40 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary/10 rounded-full blur-2xl group-hover:bg-tertiary/20 transition-all"></div>
+<div class="flex justify-between items-start z-10">
+<p class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-widest">Site Views</p>
+<span class="material-symbols-outlined text-tertiary">visibility</span>
+</div>
+<div class="z-10">
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">12.4K</h3>
+<p class="text-tertiary font-code-sm text-xs mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +15% vs last week
+                        </p>
+</div>
+</div>
+<div class="luxury-card rounded-xl p-6 flex flex-col justify-between h-40 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-error/10 rounded-full blur-2xl group-hover:bg-error/20 transition-all"></div>
+<div class="flex justify-between items-start z-10">
+<p class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-widest">Inquiries</p>
+<span class="material-symbols-outlined text-error">mail</span>
+</div>
+<div class="z-10">
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">8</h3>
+<p class="text-on-surface-variant font-code-sm text-xs mt-1 flex items-center gap-1">
+                            2 unread
+                        </p>
+</div>
+</div>
+<div class="luxury-card rounded-xl p-6 flex flex-col justify-between h-40 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all"></div>
+<div class="flex justify-between items-start z-10">
+<p class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-widest">Avg. Load Time</p>
+<span class="material-symbols-outlined text-primary">speed</span>
+</div>
+<div class="z-10">
+<h3 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">0.8s</h3>
+<p class="text-tertiary font-code-sm text-xs mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Optimal
+                        </p>
+</div>
+</div>
+</section>
+<!-- Main Content Area Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Projects Quick View (Takes up 2 columns on large screens) -->
+<section class="lg:col-span-2 space-y-6">
+<div class="flex justify-between items-center border-b border-white/5 pb-4">
+<h3 class="font-headline-md text-lg font-bold text-on-surface">Recent Projects</h3>
+<a class="text-primary font-code-sm text-sm hover:underline flex items-center gap-1" href="#">
+                            View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="space-y-4">
+<!-- Project Item 1 -->
+<div class="luxury-card rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4">
+<div class="w-full sm:w-24 h-16 rounded bg-surface-bright/20 flex-shrink-0 overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity" data-alt="A sleek, modern web application dashboard interface shown on a floating screen in a dark, neon-lit cyberpunk workspace. High contrast, technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgEuf_YHVJFUXz2T9U_YnPmX9xVELCR97untTNFZSujtUPtQLC5fHW0m0SiBcKtthUF-IxqPeYG5t-KoojT_rn95FJwqgBdqlivbZHZ7zxZqBcn3xcVEjp__muz_NUuPbCAT5AVSHT_X52PRoLrIjXIrbkQt8h-QcXcQH--BQ0iDu2-agL4Y6GkBwhYhGjcEc-gMbhd_o8Y5PLUNDB4Mqqq5Sm2x1lA6Hp0oChLNO8NLgsK1FIyLpd_bMvmTYEocOSBFx-4IvYKDc"/>
+</div>
+<div class="flex-1 min-w-0 w-full">
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-bold text-on-surface truncate">Quantum Ledger App</h4>
+<span class="tech-chip px-2 py-0.5 rounded text-[10px] font-code-sm uppercase border border-tertiary/30 text-tertiary">Live</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate">Full-stack Web3 dashboard for decentralized finance.</p>
+<div class="flex gap-2 mt-2">
+<span class="text-[10px] font-code-sm text-on-surface-variant bg-surface-bright/20 px-1.5 py-0.5 rounded">Flutter</span>
+<span class="text-[10px] font-code-sm text-on-surface-variant bg-surface-bright/20 px-1.5 py-0.5 rounded">Firebase</span>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start mt-2 sm:mt-0">
+<button class="luxury-button-secondary p-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="luxury-button-secondary p-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Project Item 2 -->
+<div class="luxury-card rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4">
+<div class="w-full sm:w-24 h-16 rounded bg-surface-bright/20 flex-shrink-0 overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity" data-alt="A highly detailed mobile application wireframe glowing on a dark screen, showing complex data visualizations and sleek UI components. Developer-first design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiBOswfh0H5ckD5ayzh-5ExDfaLULDB-wKqx865SuwFkKd9IqFZUCimRdICdqlDt9lFPwV3emNG8FPh4E3qpaMkWgYf53QvUbl-PpRaIwJBW_wvJuakBJeW5HN5ryQdi6TySPOzcsdtJB3oJyVKcUtSQkXr8u5LR5hiH2Bzn0_iA8oAzaFs3YyDQy_jpyafCL13Shj4i6L5VDJLZCLwpTSW5CQJwiRVqMiY4-c5Ogn4Rht9TrsUqN43yi3YxiOhmATMsCk8i7kSsQ"/>
+</div>
+<div class="flex-1 min-w-0 w-full">
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-bold text-on-surface truncate">Nexus Mobile Client</h4>
+<span class="tech-chip px-2 py-0.5 rounded text-[10px] font-code-sm uppercase border border-primary/30 text-primary">In Progress</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate">Cross-platform logistics tracking application.</p>
+<div class="flex gap-2 mt-2">
+<span class="text-[10px] font-code-sm text-on-surface-variant bg-surface-bright/20 px-1.5 py-0.5 rounded">Dart</span>
+<span class="text-[10px] font-code-sm text-on-surface-variant bg-surface-bright/20 px-1.5 py-0.5 rounded">GraphQL</span>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start mt-2 sm:mt-0">
+<button class="luxury-button-secondary p-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="luxury-button-secondary p-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Project Item 3 -->
+<div class="luxury-card rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4">
+<div class="w-full sm:w-24 h-16 rounded bg-surface-bright/20 flex-shrink-0 overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-[32px]">draft</span>
+</div>
+<div class="flex-1 min-w-0 w-full">
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-bold text-on-surface truncate">Atlas Design System</h4>
+<span class="tech-chip px-2 py-0.5 rounded text-[10px] font-code-sm uppercase border border-outline-variant/30 text-outline-variant">Draft</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate">Internal component library and style guide.</p>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start mt-2 sm:mt-0">
+<button class="luxury-button-secondary p-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Activity Sidebar -->
+<section class="lg:col-span-1 space-y-6">
+<div class="flex justify-between items-center border-b border-white/5 pb-4">
+<h3 class="font-headline-md text-lg font-bold text-on-surface">System Activity</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">history</span>
+</div>
+<div class="relative border-l border-white/10 ml-3 pl-6 space-y-8 py-2">
+<!-- Activity Item -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-3 h-3 bg-primary rounded-full ring-4 ring-[#050505]"></div>
+<p class="text-xs font-code-sm text-on-surface-variant mb-1">2 hours ago</p>
+<p class="text-sm text-on-surface"><span class="font-bold">Deployed v2.4</span> to production server.</p>
+</div>
+<!-- Activity Item -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-3 h-3 bg-surface-bright rounded-full ring-4 ring-[#050505] border border-white/20"></div>
+<p class="text-xs font-code-sm text-on-surface-variant mb-1">5 hours ago</p>
+<p class="text-sm text-on-surface">New inquiry from <span class="text-primary cursor-pointer hover:underline">sarah@techcorp.io</span></p>
+</div>
+<!-- Activity Item -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-3 h-3 bg-surface-bright rounded-full ring-4 ring-[#050505] border border-white/20"></div>
+<p class="text-xs font-code-sm text-on-surface-variant mb-1">Yesterday, 14:30</p>
+<p class="text-sm text-on-surface">Updated <span class="font-code-sm text-xs bg-white/5 px-1 rounded">Nexus Mobile</span> repository.</p>
+</div>
+<!-- Activity Item -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-3 h-3 bg-tertiary rounded-full ring-4 ring-[#050505]"></div>
+<p class="text-xs font-code-sm text-on-surface-variant mb-1">Oct 12, 09:00</p>
+<p class="text-sm text-on-surface">Weekly backup completed successfully.</p>
+</div>
+</div>
+<div class="luxury-card rounded-xl p-6 mt-8">
+<h4 class="font-bold text-on-surface mb-4">Quick Actions</h4>
+<div class="grid grid-cols-2 gap-3">
+<button class="luxury-button-secondary rounded-lg py-3 flex flex-col items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">cloud_upload</span>
+<span class="text-xs font-code-sm">Deploy</span>
+</button>
+<button class="luxury-button-secondary rounded-lg py-3 flex flex-col items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">article</span>
+<span class="text-xs font-code-sm">New Post</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+</body></html>

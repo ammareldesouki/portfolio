@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Settings &amp; Media Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#393939",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#aec6ff",
+                      "surface": "#131314",
+                      "surface-container": "#1f2020",
+                      "primary-container": "#0070f3",
+                      "secondary-fixed-dim": "#c6c6cc",
+                      "on-surface": "#e4e2e2",
+                      "on-primary-fixed-variant": "#004397",
+                      "background": "#131314",
+                      "tertiary-fixed-dim": "#48ddbc",
+                      "surface-container-highest": "#343535",
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-surface": "#e4e2e2",
+                      "on-secondary-fixed-variant": "#45474b",
+                      "inverse-on-surface": "#303031",
+                      "tertiary-container": "#00866f",
+                      "outline-variant": "#414754",
+                      "primary": "#aec6ff",
+                      "surface-dim": "#131314",
+                      "on-secondary-container": "#b7b8be",
+                      "on-tertiary": "#00382d",
+                      "on-tertiary-fixed-variant": "#005142",
+                      "secondary-container": "#47494e",
+                      "outline": "#8b90a0",
+                      "tertiary": "#48ddbc",
+                      "surface-tint": "#aec6ff",
+                      "on-primary-fixed": "#001a43",
+                      "surface-container-high": "#292a2a",
+                      "surface-container-lowest": "#0d0e0e",
+                      "secondary": "#c6c6cc",
+                      "on-tertiary-fixed": "#002019",
+                      "secondary-fixed": "#e2e2e8",
+                      "surface-variant": "#343535",
+                      "on-primary": "#002e6b",
+                      "on-secondary-fixed": "#1a1c20",
+                      "tertiary-fixed": "#6bfad8",
+                      "on-primary-container": "#ffffff",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#0059c5",
+                      "on-tertiary-container": "#ffffff",
+                      "on-surface-variant": "#c1c6d7",
+                      "error": "#ffb4ab",
+                      "on-secondary": "#2f3035",
+                      "error-container": "#93000a",
+                      "on-background": "#e4e2e2",
+                      "surface-container-low": "#1b1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "sidebar-width": "280px",
+                      "unit": "4px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "max-width-content": "1200px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": ["Geist"],
+                      "code-sm": ["JetBrains Mono"],
+                      "display-lg": ["Geist"],
+                      "body-base": ["Inter"],
+                      "headline-md": ["Geist"],
+                      "label-caps": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "code-sm": ["13px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .inner-glow-border {
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .inner-glow-border:hover {
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .btn-primary-inner-stroke {
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-base text-body-base custom-scrollbar overflow-x-hidden flex">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col p-4 gap-2 bg-surface-container-low dark:bg-surface-container-low h-screen w-sidebar-width fixed left-0 top-0 border-r border-white/5 z-40">
+<div class="mb-8 px-2">
+<h1 class="font-headline-md text-headline-md text-primary truncate">Admin Console</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant truncate">Management Suite</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/10 rounded-lg duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-code-sm text-code-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/10 rounded-lg duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-code-sm text-code-sm">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/10 rounded-lg duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-code-sm text-code-sm">Skills</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-bright/10 rounded-lg duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined text-[20px]">work_history</span>
+<span class="font-code-sm text-code-sm">Experience</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">perm_media</span>
+<span class="font-code-sm text-code-sm">Media</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold duration-200 ease-in-out mt-1 opacity-60" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-code-sm text-code-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full py-3 px-4 bg-primary-container text-on-primary-container font-code-sm text-code-sm rounded-lg btn-primary-inner-stroke hover:opacity-90 transition-opacity">
+                Add New Project
+             </button>
+<div class="mt-4 flex items-center gap-3 px-2">
+<img alt="Admin Profile" class="w-8 h-8 rounded-full bg-surface-bright border border-white/10" data-alt="A small, circular avatar portrait of a professional individual in a minimalist, dimly lit studio setting. The lighting is soft and moody, emphasizing a clean, developer-focused luxury aesthetic with deep navy shadows and subtle blue highlights. High resolution, sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgxNB1L_DYPOyK6qRexOGz5iSMMH-y_NdXbRQ-kWyfyd9COrZU5aIb8qHJyEcoa120UxD02uoUm9yL6QSNGcNVKB8JOLQbnTihwOjtZyqEbfROX3PnY26I-w5TjoDUN3rVjRJ_nRVI5eGBCOoYQ33A1U4tTS5PiVdePW6hJOFTMCXgu45cdPqlJuVi8-yTfkrv6SaFtravZl81nDX2xQMeUbtp6wcxUKIrx7FHvap2e7uUzIjUh8Vl5JFkr4qCtQKCd47asJm_sRE"/>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">admin@flutter.dev</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-sidebar-width flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-gutter py-4 bg-surface dark:bg-surface border-b border-outline-variant z-30 sticky top-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant hover:bg-surface-variant p-2 rounded-lg transition-all">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md text-primary">Dashboard</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:bg-surface-variant p-2 rounded-full transition-all flex items-center justify-center h-10 w-10">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-variant p-2 rounded-full transition-all flex items-center justify-center h-10 w-10">
+<span class="material-symbols-outlined text-[20px]">apps</span>
+</button>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border border-white/10 ml-2 object-cover" data-alt="User avatar icon for top app bar, representing a generic user profile in a high-end, dark mode UI context. Simple, clean geometry, subtle lighting, deeply integrated into a black background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxQSQMs79rbUOotl557nBB7oTDDSQXzNYxAJ7wC_j4hPhrs1QthIy6pMsjwjhUw8-ujmKqzJjPeBxMPntjsz5ezJz96_9Cy9U6g1xwGxNVtjnHnVE2Twzj8BukZ14uUp-_zmDeJqGcHX5fmWOT23mAQQOdHp0SLLxVpia4SsFL4BA-_qjT4oBu_hTKb6bTp2mj_w5pQhiKjaTeqfmmEav0tOxXn54O3hBBgeHApPZUS3Zf3u7sLpelqrcLPtfbXECV0LyF1z90imE"/>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 p-margin-mobile md:p-gutter max-w-max-width-content w-full mx-auto space-y-12 pb-24">
+<!-- Media Library Section -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Media Library</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">Manage your uploaded assets</p>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps text-tertiary">Storage Usage</span>
+<div class="w-32 h-1.5 bg-surface-bright rounded-full mt-2 overflow-hidden">
+<div class="h-full bg-tertiary w-3/4 rounded-full"></div>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">45.2 GB / 60 GB</p>
+</div>
+</div>
+<!-- Bento Grid Layout for Media -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Uploader Dropzone -->
+<div class="md:col-span-4 bg-[#0A0C10] border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center p-8 text-center min-h-[250px] transition-colors hover:border-primary cursor-pointer group inner-glow-border">
+<div class="w-12 h-12 rounded-full bg-surface-bright/20 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[24px]">cloud_upload</span>
+</div>
+<h4 class="font-body-base text-body-base font-semibold text-on-surface mb-2">Drag &amp; Drop files here</h4>
+<p class="font-code-sm text-code-sm text-on-surface-variant mb-6">or click to browse from your computer</p>
+<button class="px-6 py-2 bg-transparent border border-white/10 rounded-lg font-code-sm text-code-sm text-on-surface hover:bg-white/5 transition-colors">
+                            Select Files
+                        </button>
+</div>
+<!-- Asset Grid -->
+<div class="md:col-span-8 grid grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Asset Card 1 -->
+<div class="bg-[#0A0C10] rounded-xl overflow-hidden inner-glow-border group relative aspect-square">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="A sleek, futuristic developer workspace setup. Dark mode aesthetic with multiple monitors displaying lines of blue code against a deep black background. High resolution, premium photography style, subtle electric blue ambient lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAtwZCNkLMuFlPsF1wObIUvnBDMRSKIqtJHTgDqJ_UOmJxRquYDvi7QtmeBIXn2Jg0ySuLwFSkUwglQzfSoabHtM5qKU9xbwnViOzd50pw_xD8Sctfcb58JEdnSprPkJb-BLyYLkKvbOwkDAE3ckbU6_9jT93I88qaU5STDpxI1N2cO4wDeuD5JAAkPjQjqGrJa-j9MMCYLQcoNmIuqUFNFC4_8IRN9vAyOgzM543RUzL7eLC75iLerIezlHoQ4jjwk7NpyLrMElmc')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+<div class="flex justify-between items-center w-full">
+<span class="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">workspace_v2.jpg</span>
+<button class="text-white hover:text-error transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Asset Card 2 (Video) -->
+<div class="bg-[#0A0C10] rounded-xl overflow-hidden inner-glow-border group relative aspect-square">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Abstract 3D rendering of interconnected metallic nodes glowing with cyan light over a pitch-black background, representing a complex network or software architecture. Developer luxury style, high tech, clean lines." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJM20fbMdKTvhOYcao2a5BhZTA65prpFNMV1un0_cTaXF4LPgoOzkkjXVAA9A9qGk2uQKWu5WdTmBgfawAe-3006R8cxG-mHyxbQkflm1xE-n3TZVqH0fafjBg8c2z1nvDqvTeYnRvjYqC7JbykMeIaFxvde2bmMN1vZMMNXOofCwE0UR6rre0j9WG1CaR2Rm-bX3WwbDfrsFfoJCWCvJdrumKMq-9mn2b-5rb1ty9oP-7g-rFBVxiAjPvmbPb2TLOwNToiRgyVAY')"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-3 left-3 flex justify-between items-center w-[calc(100%-24px)]">
+<span class="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">network_demo.mp4</span>
+</div>
+</div>
+<!-- Asset Card 3 -->
+<div class="bg-[#0A0C10] rounded-xl overflow-hidden inner-glow-border group relative aspect-square">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Close up shot of a mechanical keyboard with blank, matte black keycaps and subtle cyan underglow lighting. Macro photography, sharp focus on a single key, blurred background. Developer aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCde9p34X_aGBcEigRXLGqGQZ-teDKgF4zXYPOAsOSo5lId2AsHW_lf18150vfPeDVB3AEaFFDoyEGdJvEsQetbtO3UaTnnukv16y88B440KxTpmkA-mdOU0Pea9Onf4ZQ4P-E6v0pUmKTIgTR2OwV7pmT4JwetDBmowiyIn-nsctzJcDZ6gMNGmacTOqjjRg_nMEQZFpf88imL5PU-U91LiBJM_SUdb755oIKfRm62nEWaODJ4_fDtcDH3hwkP16OwhUBblw2jACA')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+<div class="flex justify-between items-center w-full">
+<span class="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">keyboard_macro.png</span>
+<button class="text-white hover:text-error transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Asset Card 4 -->
+<div class="bg-[#0A0C10] rounded-xl overflow-hidden inner-glow-border group relative aspect-square">
+<div class="absolute inset-0 bg-surface-bright/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-[32px]">image</span>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+<div class="flex justify-between items-center w-full">
+<span class="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">logo_draft.svg</span>
+<button class="text-white hover:text-error transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<hr class="border-t border-white/5 my-12"/>
+<!-- Settings Section -->
+<section>
+<div class="mb-8">
+<h3 class="font-headline-md text-headline-md text-on-surface">Global Settings</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">Configure your portfolio identity and preferences</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Form Area -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Profile Card -->
+<div class="bg-[#0A0C10] p-6 rounded-xl inner-glow-border">
+<h4 class="font-body-base text-body-base font-semibold text-on-surface mb-6 border-b border-white/5 pb-2">Profile &amp; Identity</h4>
+<div class="flex flex-col md:flex-row gap-6 mb-6">
+<div class="w-24 h-24 rounded-full bg-surface-bright/30 border border-white/10 flex-shrink-0 relative group overflow-hidden">
+<img alt="Current Profile" class="w-full h-full object-cover" data-alt="A small, circular avatar portrait of a professional individual in a minimalist, dimly lit studio setting. The lighting is soft and moody, emphasizing a clean, developer-focused luxury aesthetic with deep navy shadows and subtle blue highlights. High resolution, sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYkW8QHu5mekzG14KIVx0M6fi7aI6HtmfUj8cfVuMa2CtKn92q_ACnys3L8dUC82X6g4akZFoHlUgrYIQfM_DguOnK0Y3Trit78ba08LEOZqH4ag_CBLYQ5-Yzd2_7U9SnLZkLaCMWC-5V9zC_UWitr3j7xcPOggfTdf65jc5RQaXyg3rwYp8gWqVVR13Yo70ksR61KIAQCZRNLEmV4psJL7Sy8gJn37NL024fEEH9JXAdjCrJcImXRjYGpF_cGnYdtTc2HNs-liA"/>
+<div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-white text-[20px]">edit</span>
+</div>
+</div>
+<div class="flex-1 space-y-4">
+<div>
+<label class="block font-code-sm text-code-sm text-on-surface-variant mb-1">Display Name</label>
+<input class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-2 font-body-base text-body-base text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" type="text" value="Jane Doe"/>
+</div>
+<div>
+<label class="block font-code-sm text-code-sm text-on-surface-variant mb-1">Tagline</label>
+<input class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-2 font-body-base text-body-base text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" type="text" value="Senior Flutter Engineer"/>
+</div>
+</div>
+</div>
+</div>
+<!-- SEO Metadata -->
+<div class="bg-[#0A0C10] p-6 rounded-xl inner-glow-border">
+<h4 class="font-body-base text-body-base font-semibold text-on-surface mb-6 border-b border-white/5 pb-2">SEO Metadata</h4>
+<div class="space-y-4">
+<div>
+<label class="block font-code-sm text-code-sm text-on-surface-variant mb-1">Site Title</label>
+<input class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-2 font-body-base text-body-base text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" type="text" value="Jane Doe | Flutter Developer Portfolio"/>
+</div>
+<div>
+<label class="block font-code-sm text-code-sm text-on-surface-variant mb-1">Meta Description</label>
+<textarea class="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-2 font-body-base text-body-base text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none custom-scrollbar" rows="3">Portfolio of a senior software engineer specializing in high-performance mobile applications using Flutter and Dart.</textarea>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Area -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Social Links -->
+<div class="bg-[#0A0C10] p-6 rounded-xl inner-glow-border">
+<div class="flex justify-between items-center mb-6 border-b border-white/5 pb-2">
+<h4 class="font-body-base text-body-base font-semibold text-on-surface">Social Links</h4>
+<button class="text-primary hover:text-primary-fixed transition-colors"><span class="material-symbols-outlined text-[20px]">add</span></button>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-3 bg-[#050505] border border-white/5 p-2 rounded-lg">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">code</span>
+<input class="flex-1 bg-transparent border-none text-on-surface font-code-sm text-code-sm focus:ring-0 p-0" type="text" value="github.com/janedoe"/>
+<button class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</div>
+<div class="flex items-center gap-3 bg-[#050505] border border-white/5 p-2 rounded-lg">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">link</span>
+<input class="flex-1 bg-transparent border-none text-on-surface font-code-sm text-code-sm focus:ring-0 p-0" type="text" value="linkedin.com/in/janedoe"/>
+<button class="text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</div>
+</div>
+</div>
+<!-- Preferences -->
+<div class="bg-[#0A0C10] p-6 rounded-xl inner-glow-border">
+<h4 class="font-body-base text-body-base font-semibold text-on-surface mb-6 border-b border-white/5 pb-2">Preferences</h4>
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-body-base text-body-base text-on-surface">Theme Mode</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Force dark mode for viewers</span>
+</div>
+<!-- Toggle Switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-bright peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-4 pt-4">
+<button class="flex-1 py-3 px-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-lg hover:bg-white/5 transition-colors">
+                                Cancel
+                             </button>
+<button class="flex-1 py-3 px-4 bg-primary-container text-on-primary-container font-code-sm text-code-sm rounded-lg btn-primary-inner-stroke hover:opacity-90 transition-opacity">
+                                Save Changes
+                             </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

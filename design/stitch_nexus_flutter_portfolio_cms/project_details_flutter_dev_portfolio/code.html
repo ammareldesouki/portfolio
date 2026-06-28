@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FlutterDev - Project Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#393939",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#aec6ff",
+                      "surface": "#131314",
+                      "surface-container": "#1f2020",
+                      "primary-container": "#0070f3",
+                      "secondary-fixed-dim": "#c6c6cc",
+                      "on-surface": "#e4e2e2",
+                      "on-primary-fixed-variant": "#004397",
+                      "background": "#131314",
+                      "tertiary-fixed-dim": "#48ddbc",
+                      "surface-container-highest": "#343535",
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-surface": "#e4e2e2",
+                      "on-secondary-fixed-variant": "#45474b",
+                      "inverse-on-surface": "#303031",
+                      "tertiary-container": "#00866f",
+                      "outline-variant": "#414754",
+                      "primary": "#aec6ff",
+                      "surface-dim": "#131314",
+                      "on-secondary-container": "#b7b8be",
+                      "on-tertiary": "#00382d",
+                      "on-tertiary-fixed-variant": "#005142",
+                      "secondary-container": "#47494e",
+                      "outline": "#8b90a0",
+                      "tertiary": "#48ddbc",
+                      "surface-tint": "#aec6ff",
+                      "on-primary-fixed": "#001a43",
+                      "surface-container-high": "#292a2a",
+                      "surface-container-lowest": "#0d0e0e",
+                      "secondary": "#c6c6cc",
+                      "on-tertiary-fixed": "#002019",
+                      "secondary-fixed": "#e2e2e8",
+                      "surface-variant": "#343535",
+                      "on-primary": "#002e6b",
+                      "on-secondary-fixed": "#1a1c20",
+                      "tertiary-fixed": "#6bfad8",
+                      "on-primary-container": "#ffffff",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#0059c5",
+                      "on-tertiary-container": "#ffffff",
+                      "on-surface-variant": "#c1c6d7",
+                      "error": "#ffb4ab",
+                      "on-secondary": "#2f3035",
+                      "error-container": "#93000a",
+                      "on-background": "#e4e2e2",
+                      "surface-container-low": "#1b1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "sidebar-width": "280px",
+                      "unit": "4px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "max-width-content": "1200px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": [
+                              "Geist"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg-mobile": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          body {
+              background-color: #050505; /* Level 0 Background */
+              color: #e4e2e2;
+          }
+          
+          .glass-nav {
+              background-color: rgba(10, 12, 16, 0.7);
+              backdrop-filter: blur(20px);
+              -webkit-backdrop-filter: blur(20px);
+              border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          }
+
+          .dev-card {
+              background-color: #0A0C10;
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              transition: all 0.3s ease;
+          }
+
+          .dev-card:hover {
+              border-color: #aec6ff; /* Primary Blue */
+              box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+              transform: translateY(-2px);
+          }
+
+          .dev-btn-primary {
+              background-color: #aec6ff;
+              color: #002e6b;
+              box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          }
+          
+          .dev-btn-secondary {
+              background-color: transparent;
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              transition: background-color 0.3s ease;
+          }
+          
+          .dev-btn-secondary:hover {
+              background-color: rgba(255, 255, 255, 0.1);
+          }
+
+          .tech-chip {
+              background-color: #16181D;
+              color: #666666;
+          }
+          
+          /* Hide scrollbar for gallery but keep functionality */
+          .no-scrollbar::-webkit-scrollbar {
+              display: none;
+          }
+          .no-scrollbar {
+              -ms-overflow-style: none;  /* IE and Edge */
+              scrollbar-width: none;  /* Firefox */
+          }
+      </style>
+</head>
+<body class="font-body-base text-body-base min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+<div class="flex justify-between items-center px-margin-desktop h-20 w-full max-w-max-width-content mx-auto">
+<div class="font-display-lg text-headline-md font-bold text-on-surface tracking-tighter">
+                FLUTTER.DEV
+            </div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Home</a>
+<!-- Active State -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Projects</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">About</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Resume</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Contact</a>
+</div>
+<button class="hidden md:inline-flex items-center justify-center px-6 py-2 rounded-lg dev-btn-primary font-label-caps text-label-caps uppercase scale-95 active:scale-90 transition-transform">
+                Hire Me
+            </button>
+<!-- Mobile Menu Icon (Visual Only) -->
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<main class="flex-grow pt-20"> <!-- Padding top to account for fixed nav -->
+<!-- Hero Section -->
+<section class="relative w-full h-[614px] min-h-[400px] flex items-end pb-12 px-margin-mobile md:px-margin-desktop">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center opacity-60" data-alt="A high-resolution, photorealistic hero background showcasing a sleek, futuristic mobile application interface floating in a dark, minimalist void. The design emphasizes 'Developer-First Luxury' with deep blacks, subtle electric blue accents, and a sense of depth created by soft, luminous layering. The atmosphere is highly technical yet elegantly refined." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCzZbPkd_wPWzEDFmmrSadAe5ZafxJe5ZVym3aLzmwbVt0Q2rwns_y1oDGwTxXP9TaCCDiNmRW4BsCfW55k-6YnUYJXTBM8XjLDPe8P5HRSPg6B5dyXGzp7IAkEgDCgaVn1HgQh4iH8yPEKsb4G4AxqKwCegucqqSRw2pA9V9MzVLVSwJeInQc0qz3q9sjMbkfpibW2t4GdXJs4P_F9NiNNYK-9V8aiYiPkZK0Q2rvfNZJ5l7FRYjWKxLmG9UawP0VKdb6f8s1eNh8')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent"></div>
+</div>
+<div class="relative z-10 w-full max-w-max-width-content mx-auto">
+<div class="flex flex-col gap-4">
+<div class="flex gap-2 mb-2">
+<span class="tech-chip px-3 py-1 rounded-full font-code-sm text-code-sm">Flutter</span>
+<span class="tech-chip px-3 py-1 rounded-full font-code-sm text-code-sm">Fintech</span>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface max-w-4xl">
+                        Nexus Wallet: Next-Gen Finance
+                    </h1>
+<p class="font-headline-md text-headline-md text-on-surface-variant max-w-2xl mt-4">
+                        A high-performance, secure digital wallet engineered for speed and clarity. Built entirely in Flutter.
+                    </p>
+</div>
+</div>
+</section>
+<div class="w-full max-w-max-width-content mx-auto px-margin-mobile md:px-margin-desktop py-16 flex flex-col gap-24">
+<!-- Overview Section (Bento Grid Style) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="col-span-1 md:col-span-2 dev-card p-8 rounded-xl flex flex-col justify-center">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">The Challenge</h2>
+<p class="text-on-surface-variant leading-relaxed">
+                        Modern financial applications often suffer from cluttered interfaces and sluggish performance. The objective for Nexus Wallet was to engineer a solution that stripped away the noise, focusing purely on transaction velocity and absolute data clarity. We needed to handle real-time market data alongside secure personal ledgers without compromising the frame rate.
+                    </p>
+</div>
+<div class="col-span-1 dev-card p-8 rounded-xl flex flex-col gap-6">
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Role</h3>
+<p class="text-on-surface">Lead Mobile Engineer</p>
+</div>
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Timeline</h3>
+<p class="text-on-surface">4 Months</p>
+</div>
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Links</h3>
+<div class="flex gap-4 mt-2">
+<a class="text-primary hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+<a class="text-primary hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Gallery Section (Horizontal Scroll) -->
+<section>
+<div class="flex justify-between items-end mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Interface Design</h2>
+<div class="flex gap-2">
+<button class="p-2 dev-card rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<button class="p-2 dev-card rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="flex overflow-x-auto gap-gutter pb-8 no-scrollbar snap-x">
+<!-- Gallery Item 1 -->
+<div class="min-w-[280px] md:min-w-[400px] h-[600px] dev-card rounded-xl overflow-hidden snap-center shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A meticulously designed, high-resolution mockup of a mobile device displaying a fintech application dashboard. The UI is dark-themed with sleek glassmorphism effects, crisp white typography, and vibrant electric blue data visualization charts. The device is angled slightly to emphasize a premium, developer-first luxury aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAwff8D0KkwkK54H1aR2uWS89DN-gyV7dWMOxMIULRPVZvlbQ44X_axa4A87l8jsa0oL8thJTSXmDpXqEqQCJHEWZgVdH-zefDKW-ebaIgzC6V3SFudQAiFLjkq2IqJCbToSYXf9gCSGCOdvkbwnO751ObzejmXtBdUdwi6j-w8c3LRzrwLk8NYYbYreesWPzV8Up4zkPRA6ccDVZh-yQ0oG6KwYWCv-rnvE_4AXiBv6TkpVyn-guSuqkJ0R3zZLJ3KHGLmIfmJaXU')"></div>
+</div>
+<!-- Gallery Item 2 -->
+<div class="min-w-[280px] md:min-w-[400px] h-[600px] dev-card rounded-xl overflow-hidden snap-center shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A detailed, premium mobile device mockup showing a transaction history screen of a dark-mode fintech app. The design features a rigid fluidity layout, with precise monospaced numeric accents and an inner-glow border treatment on list items. The background is a deep monochromatic navy, highlighting the minimalist structural hierarchy." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB_o8GioP3XIuB4Ah0qe0a5PlobnU99Qie2Yn-3IfHApMzsK9jIYU89VLjJC949Uqk11nkqevp6p7IbdiRyPVLYS54-2eRjzKSu7QCu5CDMN4tIxDmYLtAcTD8ueDD2ZibIxcK2GKbqd_E5tkWwNAvQ794gMEgpvrk7xZf9lQhn4bg3oLPJt1DyJRUnIQt4eHrpgsduSXtHwCvhRwwSabCuc-vcmRSfBCaCs4KHIsy0gw2l9-8XZhv3-Zrbqunj1_-gUEzcSi2_uj8')"></div>
+</div>
+<!-- Gallery Item 3 -->
+<div class="min-w-[280px] md:min-w-[400px] h-[600px] dev-card rounded-xl overflow-hidden snap-center shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A high-end, photorealistic presentation of a mobile app's profile and settings screen. The UI reflects a developer-centric luxury style, utilizing deep black backgrounds, subtle translucent overlays, and sharp, technical iconography. The overall mood is sophisticated, functional, and engineered for precision." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB7sLIExEcgX_tqx3tNWeeKFeHIiY2fv7jaV_4FQCB2Hwkxgr3Tob2aZNPM76YBx2As7mYALcdWgUCLy5wCxyysixq3tt0Oflq-YrLo87iRdR_aEtwXcp5L8wGGCdy_E_bm7eU6D1llJyt3Ll-KXiyApzzKLLzdI00K_rwB-WF7Sd0iI-I7ldhredPSEyAdtSeySiE-3jtvkmAIwF_JgsY1jbGy8eqmPwsvcGV4boaTM2Fg8rgJZ6zi1ZzFV2LUSrtv1Mo6GR3r6nI')"></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 full-width py-12 mt-16">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-max-width-content mx-auto">
+<div class="font-code-sm text-code-sm text-tertiary dark:text-tertiary mb-4 md:mb-0">
+                © 2024 FlutterDev Portfolio. Built with Precision.
+            </div>
+<div class="flex gap-8">
+<a class="font-label-caps text-label-caps text-on-surface text-on-surface-variant hover:text-primary underline transition-opacity" href="#">Github</a>
+<a class="font-label-caps text-label-caps text-on-surface text-on-surface-variant hover:text-primary underline transition-opacity" href="#">LinkedIn</a>
+<a class="font-label-caps text-label-caps text-on-surface text-on-surface-variant hover:text-primary underline transition-opacity" href="#">Twitter</a>
+</div>
+</div>
+</footer>
+</body></html>

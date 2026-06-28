@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flutter Developer Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#393939",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#aec6ff",
+                      "surface": "#131314",
+                      "surface-container": "#1f2020",
+                      "primary-container": "#0070f3",
+                      "secondary-fixed-dim": "#c6c6cc",
+                      "on-surface": "#e4e2e2",
+                      "on-primary-fixed-variant": "#004397",
+                      "background": "#131314",
+                      "tertiary-fixed-dim": "#48ddbc",
+                      "surface-container-highest": "#343535",
+                      "primary-fixed": "#d8e2ff",
+                      "inverse-surface": "#e4e2e2",
+                      "on-secondary-fixed-variant": "#45474b",
+                      "inverse-on-surface": "#303031",
+                      "tertiary-container": "#00866f",
+                      "outline-variant": "#414754",
+                      "primary": "#aec6ff",
+                      "surface-dim": "#131314",
+                      "on-secondary-container": "#b7b8be",
+                      "on-tertiary": "#00382d",
+                      "on-tertiary-fixed-variant": "#005142",
+                      "secondary-container": "#47494e",
+                      "outline": "#8b90a0",
+                      "tertiary": "#48ddbc",
+                      "surface-tint": "#aec6ff",
+                      "on-primary-fixed": "#001a43",
+                      "surface-container-high": "#292a2a",
+                      "surface-container-lowest": "#0d0e0e",
+                      "secondary": "#c6c6cc",
+                      "on-tertiary-fixed": "#002019",
+                      "secondary-fixed": "#e2e2e8",
+                      "surface-variant": "#343535",
+                      "on-primary": "#002e6b",
+                      "on-secondary-fixed": "#1a1c20",
+                      "tertiary-fixed": "#6bfad8",
+                      "on-primary-container": "#ffffff",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#0059c5",
+                      "on-tertiary-container": "#ffffff",
+                      "on-surface-variant": "#c1c6d7",
+                      "error": "#ffb4ab",
+                      "on-secondary": "#2f3035",
+                      "error-container": "#93000a",
+                      "on-background": "#e4e2e2",
+                      "surface-container-low": "#1b1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "sidebar-width": "280px",
+                      "unit": "4px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "max-width-content": "1200px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": [
+                              "Geist"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg-mobile": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #050505;
+        }
+        
+        .hero-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 112, 243, 0.15) 0%, rgba(5, 5, 5, 0) 50%);
+        }
+
+        .glass-panel {
+            background: rgba(10, 12, 16, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-border {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #0A0C10;
+        }
+        
+        .card-border:hover {
+            border-color: #aec6ff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            position: relative;
+            background-color: #0070f3;
+            color: #ffffff;
+            box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #0059c5;
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e4e2e2;
+        }
+
+        .btn-ghost:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .chip {
+            background-color: #16181D;
+            color: #666666;
+        }
+
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-2xl font-body-base text-body-base">
+<div class="flex justify-between items-center px-margin-desktop h-20 w-full max-w-max-width-content mx-auto">
+<a class="font-display-lg text-headline-md font-bold text-on-surface tracking-tighter" href="#">FLUTTER.DEV</a>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-300 scale-95 active:scale-90 transition-transform" href="#home">Home</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 scale-95 active:scale-90 transition-transform" href="#projects">Projects</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 scale-95 active:scale-90 transition-transform" href="#about">About</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 scale-95 active:scale-90 transition-transform" href="#resume">Resume</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 scale-95 active:scale-90 transition-transform" href="#contact">Contact</a>
+</div>
+<button class="btn-primary px-6 py-2 rounded-lg font-code-sm text-code-sm font-semibold transition-all scale-95 active:scale-90">Hire Me</button>
+</div>
+</nav>
+<main class="relative">
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center pt-20 px-margin-mobile md:px-margin-desktop overflow-hidden" id="home">
+<div class="absolute inset-0 hero-glow z-0"></div>
+<div class="relative z-10 w-full max-w-max-width-content mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="flex flex-col gap-8 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-surface-container-low w-max">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Available for new projects</span>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
+                        Building the future of mobile with <span class="text-primary">Flutter</span>.
+                    </h1>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-xl text-lg">
+                        I engineer high-performance, cross-platform applications with a focus on fluid animations, native-like feel, and scalable architecture.
+                    </p>
+<div class="flex flex-wrap items-center gap-4 pt-4">
+<button class="btn-primary px-8 py-4 rounded-xl font-code-sm text-code-sm font-bold tracking-wide transition-all">
+                            View Work
+                        </button>
+<button class="btn-ghost px-8 py-4 rounded-xl font-code-sm text-code-sm font-bold tracking-wide transition-all flex items-center gap-2">
+<span>GitHub</span>
+<span class="material-symbols-outlined" style="font-size: 18px;">open_in_new</span>
+</button>
+</div>
+</div>
+<div class="relative w-full aspect-[4/5] lg:aspect-square flex items-center justify-center">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-container/20 to-transparent rounded-full blur-3xl opacity-50"></div>
+<div class="relative z-10 w-[280px] h-[600px] rounded-[40px] border-[8px] border-surface-container-high bg-black shadow-2xl overflow-hidden flex items-center justify-center">
+<div class="bg-cover bg-center w-full h-full opacity-80" data-alt="A sleek, high-fidelity mobile application interface displayed on a modern smartphone screen. The UI features a dark mode theme with vibrant electric blue accents, showcasing a sophisticated dashboard with smooth curves, glassy elements, and precise typography. The aesthetic is developer-focused, luxurious, and highly polished, set against a completely black background to emphasize the screen's content." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjuFHwfe6PErZrsXhzLoPwlhHTWaLisHNwsgfsj1viFbLRO27qW75OV9TM6xr01DLspn1c9wwgc2p3s-VPJJgznQcAuyhzQ6t4HQq8je-fimwupiljEyGGZJ5qN0xHeVCawb5Cu-GwJ_CT1bHJJXMKdWX6WQNmfu1zCy5j8iTvFMOsAUmNmu4rVUved-xdkIxl3Lcf3WiljcGc17BpHmCr8uE_3uAZQPyaUQZg5AqgjH7aQRGtEZc97BHWjjQa33Flz_cVsU1XL4U')"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Projects -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop relative z-10" id="projects">
+<div class="max-w-max-width-content mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Featured Projects</h2>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-xl">Production-grade applications built with scalable architectures and obsessive attention to detail.</p>
+</div>
+<button class="btn-ghost px-6 py-2 rounded-lg font-code-sm text-code-sm transition-all flex items-center gap-2 shrink-0">
+                        View All <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Project Card 1 -->
+<div class="card-border rounded-xl overflow-hidden group transition-all duration-300 flex flex-col h-full">
+<div class="aspect-video relative overflow-hidden bg-surface-container-low">
+<div class="bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A conceptual screenshot of a sophisticated financial analytics application in dark mode. The interface features intricate data visualizations, glowing neon blue line charts, and glassmorphic control panels. The design is clean, minimalist, and developer-centric, conveying high performance and precision engineering." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAfYcXzKkBBCL1iquS18RbwHS-RekOqRLNTZExLlkgDjH1exsTb3-FDfF1-8DvJUzFOC-kOY2BFRQOVI1a85jzRusUHKg0AzU2r2uFdrmnBC9U-EUqj80-CLDK3JII6yvCOKLoUkJVyu2geeBldWKoozZJgvumeOMfmZTKO-d8Ay_jp9_o4aELpzWi_N1k0_vcNfKkhZlC1mNLbO5nW3vonaq5MT8AqF6f6Ln7AmAbKymFve-GH__uOq2dnEriuys2YdOcu3iCH9e0')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex gap-2 mb-4 flex-wrap">
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">Flutter</span>
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">Firebase</span>
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">BLoC</span>
+</div>
+<h3 class="font-headline-md text-xl text-on-surface mb-2 font-semibold">FinTech Dashboard</h3>
+<p class="font-body-base text-sm text-on-surface-variant mb-6 flex-grow">A high-performance trading interface with real-time WebSocket data streams and complex animated charting.</p>
+<div class="flex items-center justify-between mt-auto">
+<a class="font-code-sm text-sm text-primary hover:text-primary-fixed transition-colors flex items-center gap-1" href="#">
+                                    Case Study <span class="material-symbols-outlined" style="font-size: 16px;">arrow_outward</span>
+</a>
+<div class="flex gap-2">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="card-border rounded-xl overflow-hidden group transition-all duration-300 flex flex-col h-full">
+<div class="aspect-video relative overflow-hidden bg-surface-container-low">
+<div class="bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A mockup of a minimalist social media app focused on photography, displayed in dark mode. The UI showcases a grid of high-quality images with subtle glassmorphic overlays, clean sans-serif typography, and precise spacing. The overall mood is elegant, modern, and highly functional, reflecting a premium developer aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_vrmn07PFn_y2o8D80OJkiY4ETKWmZ8XEnp2pGKxgfbN86NbB3Se2hUpLIc_JJaLwe2yuRIljhQj0dWGg2Ihy_FihsUDtagkQAK3U4RhT0_oNVP3zUTzIRKkTdrXI8L_c05NEubJBJsuZ-8z9K9DONioerwI3dEl1uyI2n9CdBwXuEEFV_siX_yeTv2kQIDz1xXtmb5iP3tkCmZtVLlWx-KYWDWvhCEvfpoPQVJTv2Ol_jCD6T5g99dfQjszCILrbH224OnQecFo')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex gap-2 mb-4 flex-wrap">
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">Flutter</span>
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">Riverpod</span>
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">GraphQL</span>
+</div>
+<h3 class="font-headline-md text-xl text-on-surface mb-2 font-semibold">Lumina Social</h3>
+<p class="font-body-base text-sm text-on-surface-variant mb-6 flex-grow">A media-heavy social platform utilizing custom render objects for buttery-smooth scrolling with thousands of images.</p>
+<div class="flex items-center justify-between mt-auto">
+<a class="font-code-sm text-sm text-primary hover:text-primary-fixed transition-colors flex items-center gap-1" href="#">
+                                    Case Study <span class="material-symbols-outlined" style="font-size: 16px;">arrow_outward</span>
+</a>
+<div class="flex gap-2">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">android</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">apps</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="card-border rounded-xl overflow-hidden group transition-all duration-300 flex flex-col h-full md:col-span-2 lg:col-span-1">
+<div class="aspect-video relative overflow-hidden bg-surface-container-low">
+<div class="bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A screen displaying a smart home control center application. The dark mode interface features sleek toggles, circular sliders with glowing electric blue accents, and real-time environmental data metrics. The design emphasizes clarity, structural hierarchy, and a futuristic yet grounded hardware-like aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDaEWkk8ZYII9FkA7CLJHX-IzVbmpdmdZgDT97CUrMLBUyoyPa8ySwAjDhWE2y2rhTi7p6lIHgXa9iMJbHEDIdsmPbMwywNohfGDUhRyh9fMSkWLd9s5eMzYFGq_asTc9IE18DMtymi8TdcIhLWYn8L5BTHvx3Vm-VkLKecru7BC90V_MhXquw3bus8_0YizWQsEROm3vt7BJE2-La8UQjwuQGbb6eiUv2DCrahxe5ZCOZg0oI6Mv5sZuUI-K9uLGQa_9zkRXqVpbc')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex gap-2 mb-4 flex-wrap">
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">Flutter Web</span>
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">IoT</span>
+<span class="chip px-2 py-1 rounded font-code-sm text-[10px] tracking-wider uppercase">gRPC</span>
+</div>
+<h3 class="font-headline-md text-xl text-on-surface mb-2 font-semibold">Nexus Home</h3>
+<p class="font-body-base text-sm text-on-surface-variant mb-6 flex-grow">An IoT control center deployed across Web and Desktop, featuring custom gesture recognition and low-latency commands.</p>
+<div class="flex items-center justify-between mt-auto">
+<a class="font-code-sm text-sm text-primary hover:text-primary-fixed transition-colors flex items-center gap-1" href="#">
+                                    Case Study <span class="material-symbols-outlined" style="font-size: 16px;">arrow_outward</span>
+</a>
+<div class="flex gap-2">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">language</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest font-code-sm text-code-sm text-tertiary dark:text-tertiary full-width py-12 border-t border-white/5 transition-opacity">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-max-width-content mx-auto gap-4">
+<span class="font-label-caps text-label-caps text-on-surface">© 2024 FlutterDev Portfolio. Built with Precision.</span>
+<div class="flex gap-6">
+<a class="text-on-surface-variant hover:text-primary underline" href="#">Github</a>
+<a class="text-on-surface-variant hover:text-primary underline" href="#">LinkedIn</a>
+<a class="text-on-surface-variant hover:text-primary underline" href="#">Twitter</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

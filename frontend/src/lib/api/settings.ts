@@ -5,6 +5,7 @@ export interface SocialLink {
   name: string;
   icon: string;
   url: string;
+  show?: boolean;
 }
 
 export interface Skill {

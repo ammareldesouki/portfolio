@@ -42,7 +42,7 @@ export default function AdminSettingsPage() {
     phone: "",
     resumeUrl: "",
     skills: [],
-    socialLinks: [{ name: "", icon: "link", url: "" }],
+    socialLinks: [{ name: "", icon: "link", url: "", show: true }],
     experience: [],
     education: [],
     certifications: [],
@@ -103,14 +103,14 @@ export default function AdminSettingsPage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handleSocialChange(index: number, field: keyof SocialLink, value: string) {
+  function handleSocialChange(index: number, field: keyof SocialLink, value: string | boolean) {
     const links = [...form.socialLinks];
-    links[index] = { ...links[index], [field]: value };
+    (links[index] as unknown as Record<string, unknown>)[field] = value;
     handleChange("socialLinks", links);
   }
 
   function addSocialLink() {
-    handleChange("socialLinks", [...form.socialLinks, { name: "", icon: "link", url: "" }]);
+    handleChange("socialLinks", [...form.socialLinks, { name: "", icon: "link", url: "", show: true }]);
   }
 
   function removeSocialLink(index: number) {
@@ -870,39 +870,53 @@ export default function AdminSettingsPage() {
                   </p>
                 )}
                 {form.socialLinks.map((link, i) => (
-                  <div key={i} className="bg-[#050505] border border-white/5 p-3 rounded-lg space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-on-surface-variant text-[20px]">{link.icon || "link"}</span>
-                      <input
-                        type="text"
-                        value={link.name}
-                        onChange={(e) => handleSocialChange(i, "name", e.target.value)}
-                        placeholder="Label (e.g. GitHub)"
-                        className="flex-1 bg-transparent border-none text-on-surface font-code-sm text-code-sm focus:ring-0 p-0 outline-none"
-                      />
+                  <div key={i} className="bg-[#050505] border border-white/5 p-4 rounded-lg space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className="material-symbols-outlined text-on-surface-variant text-[20px]">{link.icon || "link"}</span>
+                        <input
+                          type="text"
+                          value={link.name}
+                          onChange={(e) => handleSocialChange(i, "name", e.target.value)}
+                          placeholder="Label (e.g. GitHub)"
+                          className="flex-1 bg-transparent border-none text-on-surface font-code-sm text-code-sm focus:ring-0 p-0 outline-none"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label className="flex items-center gap-1 cursor-pointer" title="Show on public pages">
+                          <input
+                            type="checkbox"
+                            checked={link.show !== false}
+                            onChange={(e) => handleSocialChange(i, "show", e.target.checked)}
+                            className="accent-primary"
+                          />
+                          <span className="font-code-sm text-[10px] text-on-surface-variant">Show</span>
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => removeSocialLink(i)}
+                          className="text-on-surface-variant hover:text-error transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">close</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <input
                         type="text"
                         value={link.icon}
                         onChange={(e) => handleSocialChange(i, "icon", e.target.value)}
-                        placeholder="Icon or URL"
-                        className="w-28 bg-transparent border border-white/5 rounded text-on-surface-variant font-code-sm text-[10px] px-2 py-1 text-center outline-none"
-                        title="Material Symbols name (e.g. github) or image URL (e.g. https://...)"
+                        placeholder="Icon: Material Symbols name (e.g. code, email, call) or image URL (https://...)"
+                        className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-3 py-1.5 outline-none focus:border-primary/50"
                       />
-                      <button
-                        type="button"
-                        onClick={() => removeSocialLink(i)}
-                        className="text-on-surface-variant hover:text-error transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-[16px]">close</span>
-                      </button>
+                      <input
+                        type="text"
+                        value={link.url}
+                        onChange={(e) => handleSocialChange(i, "url", e.target.value)}
+                        placeholder="URL (e.g. https://github.com/username)"
+                        className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-3 py-1.5 outline-none focus:border-primary/50"
+                      />
                     </div>
-                    <input
-                      type="text"
-                      value={link.url}
-                      onChange={(e) => handleSocialChange(i, "url", e.target.value)}
-                      placeholder="URL or phone"
-                      className="w-full bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none"
-                    />
                   </div>
                 ))}
               </div>

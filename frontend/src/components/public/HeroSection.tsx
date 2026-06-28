@@ -38,7 +38,7 @@ export function HeroSection() {
             <a href="/projects" className="btn-primary px-8 py-4 rounded-xl font-code-sm text-code-sm font-bold tracking-wide transition-all">
               View Work
             </a>
-            {settings?.socialLinks?.map((link, i) => (
+            {settings?.socialLinks?.filter((l) => l.show !== false).map((link, i) => (
               <a
                 key={i}
                 href={link.url}

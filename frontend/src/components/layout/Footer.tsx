@@ -14,7 +14,7 @@ export function Footer() {
   }, []);
 
   const links = settings?.socialLinks?.length
-    ? settings.socialLinks
+    ? settings.socialLinks.filter((l) => l.show !== false)
     : [];
 
   return (

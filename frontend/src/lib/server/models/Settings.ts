@@ -37,6 +37,7 @@ export interface ISocialLink {
   name: string;
   icon: string;
   url: string;
+  show?: boolean;
 }
 
 export interface ISettings extends Document {
@@ -80,7 +81,7 @@ const SettingsSchema = new Schema<ISettings>(
     phone: { type: String, default: '' },
     resumeUrl: { type: String },
     skills: [{ name: String, level: Number }],
-    socialLinks: [{ name: String, icon: String, url: String }],
+    socialLinks: [{ name: String, icon: String, url: String, show: { type: Boolean, default: true } }],
     experience: [{
       company: String,
       role: String,

@@ -21,6 +21,7 @@ export const updateSettingsSchema = z.object({
     name: z.string().default('').optional(),
     icon: z.string().default('link').optional(),
     url: z.string().min(1),
+    show: z.boolean().optional(),
   })).optional(),
   experience: z.array(z.object({
     company: z.string().min(1),

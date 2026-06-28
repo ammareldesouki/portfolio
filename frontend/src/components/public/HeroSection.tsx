@@ -38,6 +38,17 @@ export function HeroSection() {
             <a href="/projects" className="btn-primary px-8 py-4 rounded-xl font-code-sm text-code-sm font-bold tracking-wide transition-all">
               View Work
             </a>
+            {settings?.resumeUrl && (
+              <a
+                href={settings.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost px-8 py-4 rounded-xl font-code-sm text-code-sm font-bold tracking-wide transition-all flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-[18px]">download</span>
+                Download CV
+              </a>
+            )}
             {settings?.socialLinks?.filter((l) => l.show !== false).map((link, i) => (
               <a
                 key={i}

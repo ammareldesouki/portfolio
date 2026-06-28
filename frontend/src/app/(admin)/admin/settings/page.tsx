@@ -511,6 +511,13 @@ export default function AdminSettingsPage() {
                   onChange={(e) => handleChange("avatar", e.target.value)}
                   placeholder="https://example.com/avatar.jpg"
                 />
+                <Input
+                  id="resumeUrl"
+                  label="Resume / CV URL"
+                  value={form.resumeUrl || ""}
+                  onChange={(e) => handleChange("resumeUrl", e.target.value)}
+                  placeholder="https://kphelhyhbnpfnydi.public.blob.vercel-storage.com/cv.pdf"
+                />
                 <div className="flex flex-col gap-2">
                   <label className="font-label-caps text-label-caps text-on-surface-variant">
                     Bio

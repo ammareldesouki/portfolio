@@ -50,10 +50,10 @@ export default function AboutPage() {
   };
 
   return (
-    <main className="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-content mx-auto space-y-32">
+    <main className="pt-24 md:pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-content mx-auto space-y-16 md:space-y-32">
       {/* About Section */}
-      <section className="grid grid-cols-1 md:grid-cols-12 gap-gutter" id="about">
-        <div className="md:col-span-7 space-y-8 flex flex-col justify-center">
+      <section className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-gutter" id="about">
+        <div className="md:col-span-7 space-y-6 md:space-y-8 flex flex-col justify-center order-2 md:order-1">
           <div className="space-y-4">
             <h1 className="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
               {s?.displayName ? (
@@ -105,7 +105,7 @@ export default function AboutPage() {
           )}
         </div>
 
-        <div className="md:col-span-5 relative h-[500px] rounded-xl overflow-hidden border border-white/10 inner-glow bg-surface-container-low flex items-center justify-center">
+        <div className="md:col-span-5 relative h-[300px] md:h-[500px] rounded-xl overflow-hidden border border-white/10 inner-glow bg-surface-container-low flex items-center justify-center order-1 md:order-2">
           {s?.avatar ? (
             <img
               src={s.avatar}
@@ -142,8 +142,25 @@ export default function AboutPage() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="md:col-span-1 space-y-2">
+        <div className="flex flex-col md:flex-row md:grid md:grid-cols-3 gap-0 md:gap-8">
+          {/* Mobile: horizontal tabs */}
+          <div className="flex md:hidden gap-1 mb-6 overflow-x-auto pb-2 -mx-px">
+            {resumeSections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => setActiveSection(section.id)}
+                className={`whitespace-nowrap px-4 py-2 rounded-lg font-code-sm text-code-sm transition-colors ${
+                  activeSection === section.id
+                    ? "bg-primary-container text-on-primary-container"
+                    : "text-on-surface-variant hover:bg-surface-bright/10"
+                }`}
+              >
+                {section.label.replace(/^\d+ \/\//, "").trim()}
+              </button>
+            ))}
+          </div>
+          {/* Desktop: vertical sidebar */}
+          <div className="hidden md:block md:col-span-1 space-y-2">
             {resumeSections.map((section) => (
               <button
                 key={section.id}
@@ -159,7 +176,7 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <div className="md:col-span-2 space-y-12 pl-0 md:pl-8 border-l border-white/5">
+          <div className="md:col-span-2 space-y-12 pl-0 md:pl-8 border-l-0 md:border-l border-white/5">
             {activeSection === "experience" && (
               s?.experience && s.experience.length > 0 ? (
                 s.experience.map((exp, i) => (
@@ -295,7 +312,7 @@ export default function AboutPage() {
           ) : (
             <form
               onSubmit={handleContactSubmit}
-              className="space-y-6 bg-surface-container/50 border border-white/5 p-8 rounded-xl backdrop-blur-sm"
+              className="space-y-6 bg-surface-container/50 border border-white/5 p-4 md:p-8 rounded-xl backdrop-blur-sm"
             >
               {contactError && (
                 <div className="p-4 bg-error-container/20 border border-error/30 rounded-lg">
@@ -303,7 +320,7 @@ export default function AboutPage() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <Input
                   id="contact-name"
                   label="Identification"

@@ -5,7 +5,7 @@ import { SideNavBar } from "@/components/layout/SideNavBar";
 import { TopAppBar } from "@/components/layout/TopAppBar";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -31,13 +31,15 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <AuthProvider>
       <AuthGuard>
         <div className="min-h-screen flex bg-[#050505]">
-          <SideNavBar />
+          <SideNavBar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           <div className="flex-1 md:ml-sidebar-width flex flex-col min-h-screen">
-            <TopAppBar title="Dashboard" />
+            <TopAppBar title="Dashboard" onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
             <main className="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto">
               {children}
             </main>

@@ -13,12 +13,17 @@ const sidebarLinks = [
   { href: "/admin/settings", label: "Settings", icon: "settings" },
 ];
 
-export function SideNavBar() {
+interface SideNavBarProps {
+  open?: boolean;
+  onClose?: () => void;
+}
+
+export function SideNavBar({ open, onClose }: SideNavBarProps) {
   const pathname = usePathname();
   const { user } = useAuth();
 
-  return (
-    <aside className="hidden md:flex bg-surface-container-low border-r border-white/5 h-screen w-sidebar-width fixed left-0 top-0 flex flex-col p-4 gap-2 z-40">
+  const sidebar = (
+    <>
       <div className="mb-8 px-4">
         <h1 className="font-headline-md text-headline-md text-primary tracking-tight font-bold">
           Admin Console
@@ -35,6 +40,7 @@ export function SideNavBar() {
             <Link
               key={link.href + link.label}
               href={link.href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg font-code-sm text-code-sm duration-200 ease-in-out ${
                 isActive
                   ? "bg-primary-container text-on-primary-container font-bold"
@@ -53,6 +59,7 @@ export function SideNavBar() {
       <div className="mt-auto pt-4 border-t border-white/5">
         <Link
           href="/admin/projects/new"
+          onClick={onClose}
           className="w-full py-3 px-4 bg-primary-container text-on-primary-container rounded-lg font-code-sm text-code-sm font-bold flex items-center justify-center gap-2 transition-transform active:scale-95 duration-200"
         >
           <span className="material-symbols-outlined">add</span>
@@ -73,6 +80,25 @@ export function SideNavBar() {
           </div>
         )}
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex bg-surface-container-low border-r border-white/5 h-screen w-sidebar-width fixed left-0 top-0 flex flex-col p-4 gap-2 z-40">
+        {sidebar}
+      </aside>
+
+      {/* Mobile overlay */}
+      {open && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+          <aside className="absolute left-0 top-0 h-full w-72 bg-surface-container-low border-r border-white/5 flex flex-col p-4 gap-2 z-50">
+            {sidebar}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }

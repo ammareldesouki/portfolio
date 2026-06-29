@@ -2,13 +2,18 @@
 
 interface TopAppBarProps {
   title: string;
+  onMenuToggle?: () => void;
 }
 
-export function TopAppBar({ title }: TopAppBarProps) {
+export function TopAppBar({ title, onMenuToggle }: TopAppBarProps) {
   return (
     <header className="bg-surface/80 backdrop-blur-xl border-b border-white/5 flex justify-between items-center px-gutter py-4 sticky top-0 z-30 transition-all">
       <div className="flex items-center gap-4">
-        <button className="md:hidden text-on-surface-variant hover:text-primary transition-colors">
+        <button
+          className="md:hidden text-on-surface-variant hover:text-primary transition-colors"
+          onClick={onMenuToggle}
+          aria-label="Toggle sidebar"
+        >
           <span className="material-symbols-outlined">menu</span>
         </button>
         <h2 className="font-headline-md text-headline-md text-primary tracking-tighter font-extrabold hidden md:block">

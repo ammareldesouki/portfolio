@@ -242,130 +242,131 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="space-y-12 pb-24">
-      <section>
-        <div className="flex justify-between items-end mb-6">
-          <div>
-            <h3 className="font-headline-md text-headline-md text-on-surface">
-              Media Library
-            </h3>
-            <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
-              Manage your uploaded assets
-            </p>
-          </div>
-          <div className="text-right">
-            <span className="font-label-caps text-label-caps text-tertiary">
-              Storage Usage
-            </span>
-            <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
-              {media.length} files
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="md:col-span-4 bg-[#0A0C10] border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center p-8 text-center min-h-[250px] transition-colors hover:border-primary cursor-pointer group"
-          >
-            <div className="w-12 h-12 rounded-full bg-surface-bright/20 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-              <span className="material-symbols-outlined text-primary text-[24px]">
-                {uploading ? "hourglass_top" : "cloud_upload"}
-              </span>
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+        {/* Media Library — left column */}
+        <section className="xl:col-span-5">
+          <div className="flex justify-between items-end mb-6">
+            <div>
+              <h3 className="font-headline-md text-headline-md text-on-surface">
+                Media Library
+              </h3>
+              <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
+                Manage your uploaded assets
+              </p>
             </div>
-            <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-2">
-              {uploading ? "Uploading..." : "Drag & Drop files here"}
-            </h4>
-            <p className="font-code-sm text-code-sm text-on-surface-variant mb-6">
-              or click to browse from your computer
-            </p>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*,video/*,application/pdf"
-              onChange={handleFileUpload}
-              className="hidden"
-            />
-            <button
-              type="button"
-              disabled={uploading}
-              className="px-6 py-2 bg-transparent border border-white/10 rounded-lg font-code-sm text-code-sm text-on-surface hover:bg-white/5 transition-colors disabled:opacity-50"
-            >
-              Select Files
-            </button>
+            <div className="text-right">
+              <span className="font-label-caps text-label-caps text-tertiary">
+                Storage Usage
+              </span>
+              <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
+                {media.length} files
+              </p>
+            </div>
           </div>
 
-          <div className="md:col-span-8 grid grid-cols-2 lg:grid-cols-3 gap-4">
-            {media.length === 0 ? (
-              <div className="col-span-full flex items-center justify-center h-[250px] text-on-surface-variant text-sm">
-                No media uploaded yet.
+          <div className="flex flex-col gap-4">
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="bg-[#0A0C10] border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center p-8 text-center min-h-[200px] transition-colors hover:border-primary cursor-pointer group"
+            >
+              <div className="w-12 h-12 rounded-full bg-surface-bright/20 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="material-symbols-outlined text-primary text-[24px]">
+                  {uploading ? "hourglass_top" : "cloud_upload"}
+                </span>
               </div>
-            ) : (
-              media.map((asset) => (
-                <div
-                  key={asset.public_id}
-                  className="bg-[#0A0C10] rounded-xl overflow-hidden border border-white/10 group relative aspect-square"
-                >
-                  {asset.resource_type === "video" ? (
-                    <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
-                      <span className="material-symbols-outlined text-4xl text-on-surface-variant">
-                        play_circle
-                      </span>
-                    </div>
-                  ) : asset.format === "pdf" ? (
-                    <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
-                      <span className="material-symbols-outlined text-4xl text-on-surface-variant">
-                        picture_as_pdf
-                      </span>
-                    </div>
-                  ) : (
-                    <img
-                      src={asset.secure_url}
-                      alt={asset.original_filename}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                    <div className="flex flex-col gap-1 w-full">
-                      <div className="flex justify-between items-center w-full">
-                        <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm truncate max-w-[70%]">
-                          {asset.original_filename}.{asset.format}
-                        </span>
-                        <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">
-                          {formatBytes(asset.bytes)}
+              <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-2">
+                {uploading ? "Uploading..." : "Drag & Drop files here"}
+              </h4>
+              <p className="font-code-sm text-code-sm text-on-surface-variant mb-6">
+                or click to browse from your computer
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,video/*,application/pdf"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+              <button
+                type="button"
+                disabled={uploading}
+                className="px-6 py-2 bg-transparent border border-white/10 rounded-lg font-code-sm text-code-sm text-on-surface hover:bg-white/5 transition-colors disabled:opacity-50"
+              >
+                Select Files
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+              {media.length === 0 ? (
+                <div className="col-span-full flex items-center justify-center h-[200px] text-on-surface-variant text-sm">
+                  No media uploaded yet.
+                </div>
+              ) : (
+                media.map((asset) => (
+                  <div
+                    key={asset.public_id}
+                    className="bg-[#0A0C10] rounded-xl overflow-hidden border border-white/10 group relative aspect-square"
+                  >
+                    {asset.resource_type === "video" ? (
+                      <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
+                        <span className="material-symbols-outlined text-4xl text-on-surface-variant">
+                          play_circle
                         </span>
                       </div>
+                    ) : asset.format === "pdf" ? (
+                      <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
+                        <span className="material-symbols-outlined text-4xl text-on-surface-variant">
+                          picture_as_pdf
+                        </span>
+                      </div>
+                    ) : (
+                      <img
+                        src={asset.secure_url}
+                        alt={asset.original_filename}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                      <div className="flex flex-col gap-1 w-full">
+                        <div className="flex justify-between items-center w-full">
+                          <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm truncate max-w-[70%]">
+                            {asset.original_filename}.{asset.format}
+                          </span>
+                          <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                            {formatBytes(asset.bytes)}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => { navigator.clipboard.writeText(asset.secure_url); alert("URL copied: " + asset.secure_url.slice(0, 30) + "..."); }}
+                          className="font-code-sm text-[10px] text-primary bg-primary/20 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary/30 transition-colors"
+                        >
+                          Copy URL
+                        </button>
+                      </div>
                       <button
-                        onClick={() => { navigator.clipboard.writeText(asset.secure_url); alert("URL copied: " + asset.secure_url.slice(0, 30) + "..."); }}
-                        className="font-code-sm text-[10px] text-primary bg-primary/20 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary/30 transition-colors"
+                        onClick={() => handleDeleteMedia(asset.public_id)}
+                        className="absolute top-2 right-2 text-white hover:text-error transition-colors"
                       >
-                        Copy URL
+                        <span className="material-symbols-outlined text-[16px]">delete</span>
                       </button>
                     </div>
-                    <button
-                      onClick={() => handleDeleteMedia(asset.public_id)}
-                      className="absolute top-2 right-2 text-white hover:text-error transition-colors"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">delete</span>
-                    </button>
                   </div>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <hr className="border-t border-white/5" />
-
-      <section>
-        <div className="mb-8">
-          <h3 className="font-headline-md text-headline-md text-on-surface">
-            Global Settings
-          </h3>
-          <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
-            Configure your portfolio identity and content
-          </p>
-        </div>
+        {/* Global Settings — right column */}
+        <section className="xl:col-span-7">
+          <div className="mb-6">
+            <h3 className="font-headline-md text-headline-md text-on-surface">
+              Global Settings
+            </h3>
+            <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
+              Configure your portfolio identity and content
+            </p>
+          </div>
 
         {/* Tabs */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
@@ -995,6 +996,7 @@ export default function AdminSettingsPage() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

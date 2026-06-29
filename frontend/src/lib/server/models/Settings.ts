@@ -30,7 +30,8 @@ export interface ICertification {
 
 export interface ISkill {
   name: string;
-  level: number;
+  category?: string;
+  icon?: string;
 }
 
 export interface ISocialLink {
@@ -80,7 +81,7 @@ const SettingsSchema = new Schema<ISettings>(
     email: { type: String, default: '' },
     phone: { type: String, default: '' },
     resumeUrl: { type: String },
-    skills: [{ name: String, level: Number }],
+    skills: [{ name: String, category: String, icon: String }],
     socialLinks: [{ name: String, icon: String, url: String, show: { type: Boolean, default: true } }],
     experience: [{
       company: String,

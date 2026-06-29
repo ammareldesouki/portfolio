@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { contactApi } from "@/lib/api/contact";
 import { settingsApi } from "@/lib/api/settings";
 import type { Settings } from "@/lib/api/settings";
+import { SkillCard } from "@/components/ui/SkillCard";
 
 const allResumeSections = [
   { id: "experience", label: "01 // Experience", key: "showExperience" as const },
@@ -82,23 +83,13 @@ export default function AboutPage() {
           )}
 
           {s?.showSkills !== false && s?.skills && s.skills.length > 0 && (
-            <div className="space-y-3">
+            <div className="space-y-6">
               <h3 className="font-label-caps text-label-caps text-tertiary">
-                Skills
+                Skills & Tooling
               </h3>
-              <div className="flex flex-wrap gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {s.skills.map((skill, i) => (
-                  <div key={i} className="flex flex-col gap-1">
-                    <div className="bg-[#16181D] text-on-surface-variant font-code-sm text-code-sm px-3 py-1.5 rounded border border-white/5">
-                      {skill.name}
-                    </div>
-                    <div className="w-full h-1 bg-[#16181D] rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary rounded-full transition-all"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
+                  <SkillCard key={i} name={skill.name} icon={skill.icon} />
                 ))}
               </div>
             </div>

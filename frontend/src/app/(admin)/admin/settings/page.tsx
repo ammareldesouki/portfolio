@@ -124,7 +124,7 @@ export default function AdminSettingsPage() {
   }
 
   function addSkill() {
-    handleChange("skills", [...form.skills, { name: "", level: 50 }]);
+    handleChange("skills", [...form.skills, { name: "", category: "", icon: "" }]);
   }
 
   function removeSkill(index: number) {
@@ -573,31 +573,39 @@ export default function AdminSettingsPage() {
                   </p>
                 )}
                 {form.skills.map((skill, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-[#050505] border border-white/5 p-3 rounded-lg">
-                    <input
-                      type="text"
-                      value={skill.name}
-                      onChange={(e) => handleSkillChange(i, "name", e.target.value)}
-                      placeholder="Skill name"
-                      className="flex-1 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
-                    />
-                    <div className="flex items-center gap-2 flex-shrink-0">
+                  <div key={i} className="flex items-start gap-3 bg-[#050505] border border-white/5 p-3 rounded-lg">
+                    <div className="flex-1 flex flex-col sm:flex-row gap-3">
                       <input
-                        type="range"
-                        min={0}
-                        max={100}
-                        value={skill.level}
-                        onChange={(e) => handleSkillChange(i, "level", parseInt(e.target.value))}
-                        className="w-20 accent-primary"
+                        type="text"
+                        value={skill.name}
+                        onChange={(e) => handleSkillChange(i, "name", e.target.value)}
+                        placeholder="Skill name"
+                        className="flex-1 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
                       />
-                      <span className="font-code-sm text-code-sm text-on-surface-variant w-8 text-right">
-                        {skill.level}%
-                      </span>
+                      <input
+                        type="text"
+                        value={skill.category || ""}
+                        onChange={(e) => handleSkillChange(i, "category", e.target.value)}
+                        placeholder="Category (e.g. Languages)"
+                        className="flex-1 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      <input
+                        type="text"
+                        value={skill.icon || ""}
+                        onChange={(e) => handleSkillChange(i, "icon", e.target.value)}
+                        placeholder="Icon name"
+                        className="w-32 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
+                      />
+                      {skill.icon && (
+                        <div className="flex items-center justify-center w-8 h-8 mt-1 text-on-surface-variant">
+                          <span className="material-symbols-outlined text-xl">{skill.icon}</span>
+                        </div>
+                      )}
                     </div>
                     <button
                       type="button"
                       onClick={() => removeSkill(i)}
-                      className="text-on-surface-variant hover:text-error transition-colors flex-shrink-0"
+                      className="text-on-surface-variant hover:text-error transition-colors flex-shrink-0 mt-1"
                     >
                       <span className="material-symbols-outlined text-[16px]">close</span>
                     </button>

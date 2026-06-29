@@ -13,7 +13,8 @@ const transporter = nodemailer.createTransport({
 
 export async function sendContactEmail(to: string, name: string, fromEmail: string, message: string) {
   await transporter.sendMail({
-    from: env.smtpFrom,
+    from: `"${name}" <${env.smtpFrom}>`,
+    replyTo: fromEmail,
     to,
     subject: `Portfolio Contact — ${name}`,
     html: `

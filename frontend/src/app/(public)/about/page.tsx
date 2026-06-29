@@ -142,30 +142,14 @@ export default function AboutPage() {
           )}
         </div>
 
-        <div className="flex flex-col md:flex-row md:grid md:grid-cols-3 gap-0 md:gap-8">
-          {/* Mobile: horizontal tabs */}
-          <div className="flex md:hidden gap-1 mb-6 overflow-x-auto pb-2 -mx-px">
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-8">
+          {/* Sidebar tabs — works on both mobile and desktop */}
+          <div className="flex md:flex-col gap-1 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
             {resumeSections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className={`whitespace-nowrap px-4 py-2 rounded-lg font-code-sm text-code-sm transition-colors ${
-                  activeSection === section.id
-                    ? "bg-primary-container text-on-primary-container"
-                    : "text-on-surface-variant hover:bg-surface-bright/10"
-                }`}
-              >
-                {section.label.replace(/^\d+ \/\//, "").trim()}
-              </button>
-            ))}
-          </div>
-          {/* Desktop: vertical sidebar */}
-          <div className="hidden md:block md:col-span-1 space-y-2">
-            {resumeSections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setActiveSection(section.id)}
-                className={`w-full text-left px-4 py-3 font-code-sm text-code-sm transition-colors ${
+                className={`whitespace-nowrap md:w-full text-left px-4 py-3 font-code-sm text-code-sm transition-colors ${
                   activeSection === section.id
                     ? "bg-surface-bright/10 text-primary border-l-2 border-primary"
                     : "text-on-surface-variant hover:bg-surface-bright/5 hover:text-on-surface border-l-2 border-transparent"

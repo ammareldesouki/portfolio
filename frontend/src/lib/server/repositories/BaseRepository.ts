@@ -13,8 +13,10 @@ export class BaseRepository<T extends Document> {
     return this.model.findOne(filter);
   }
 
-  async find(filter: Filter = {}): Promise<T[]> {
-    return this.model.find(filter);
+  async find(filter: Filter = {}, sort?: Record<string, 1 | -1>): Promise<T[]> {
+    let query = this.model.find(filter);
+    if (sort) query = query.sort(sort);
+    return query;
   }
 
   async findPaginated(

@@ -11,10 +11,10 @@ export class ProjectRepository extends BaseRepository<IProject> {
   }
 
   async findPublished() {
-    return this.find({ status: 'published' });
+    return this.find({ status: 'published' }, { sortOrder: 1 });
   }
 
   async findFeatured() {
-    return this.find({ status: 'published', featured: true });
+    return this.find({ status: 'published', featured: true }, { sortOrder: 1 });
   }
 }

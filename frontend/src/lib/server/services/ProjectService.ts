@@ -15,7 +15,7 @@ export class ProjectService {
       ? { [query.sort.slice(1)]: -1 as const }
       : query.sort === 'sortOrder'
         ? { sortOrder: 1 as const }
-        : { [query.sort || 'createdAt']: -1 as const };
+        : { [query.sort || 'sortOrder']: 1 as const };
 
     return projectRepo.findPaginated(filter, query.page || 1, query.limit || 12, sortField);
   }

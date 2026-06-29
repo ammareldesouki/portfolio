@@ -45,10 +45,6 @@ export function TopNavBar() {
           })}
         </div>
 
-        <button className="btn-primary px-6 py-2 rounded-lg font-code-sm text-code-sm font-semibold transition-all scale-95 active:scale-90 hidden md:block">
-          Hire Me
-        </button>
-
         <button
           className="md:hidden text-on-surface"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -80,9 +76,6 @@ export function TopNavBar() {
                 </Link>
               );
             })}
-            <button className="btn-primary w-full mt-2 px-6 py-3 rounded-lg font-code-sm text-code-sm font-semibold">
-              Hire Me
-            </button>
           </div>
         </div>
       )}

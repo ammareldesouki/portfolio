@@ -7,19 +7,16 @@ export interface Project {
   slug: string;
   description: string;
   category: string;
-  status: "draft" | "in_progress" | "published" | "archived";
+  status: 'draft' | 'in_progress' | 'published' | 'archived';
   techStack: string[];
   imageUrl?: string;
   galleryUrls: string[];
-  links: {
-    github?: string;
-    live?: string;
-    caseStudy?: string;
-  };
+  links: { github?: string; live?: string; caseStudy?: string };
   featured: boolean;
   role?: string;
   timeline?: string;
   challenge?: string;
+  sortOrder: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -72,4 +69,7 @@ export const projectsApi = {
 
   getFeatured: () =>
     apiClient.get<ApiResponse<Project[]>>("/projects/featured").then((r) => r.data),
+
+  reorder: (orders: { _id: string; sortOrder: number }[]) =>
+    apiClient.put<ApiResponse<null>>("/projects/reorder", { orders }).then((r) => r.data),
 };

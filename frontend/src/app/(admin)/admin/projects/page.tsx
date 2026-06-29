@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { FilterBar } from "@/components/admin/FilterBar";
 import { ProjectListItem } from "@/components/admin/ProjectListItem";
@@ -22,7 +22,8 @@ export default function AdminProjectsPage() {
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const limit = 10;
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const limit = 50;
 
   useEffect(() => {
     async function load() {
@@ -31,6 +32,7 @@ export default function AdminProjectsPage() {
         const res = await projectsApi.list({
           page,
           limit,
+          sort: "sortOrder",
           ...(status !== "all" ? { status } : {}),
         });
         setProjects(res.data || []);
@@ -55,6 +57,30 @@ export default function AdminProjectsPage() {
     }
   };
 
+  const handleDragStart = useCallback((index: number) => {
+    setDragIndex(index);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (dragIndex === null || dragIndex === index) return;
+    const items = [...projects];
+    const [moved] = items.splice(dragIndex, 1);
+    items.splice(index, 0, moved);
+    setProjects(items);
+    setDragIndex(index);
+  }, [dragIndex, projects]);
+
+  const handleDragEnd = useCallback(async () => {
+    setDragIndex(null);
+    const orders = projects.map((p, i) => ({ _id: p._id, sortOrder: i }));
+    try {
+      await projectsApi.reorder(orders);
+    } catch (err) {
+      console.error("Failed to reorder", err);
+    }
+  }, [projects]);
+
   const totalPages = Math.ceil(total / limit);
   const filtered = search
     ? projects.filter(
@@ -70,7 +96,6 @@ export default function AdminProjectsPage() {
         Projects
       </h2>
 
-      {/* Search + Filter */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between w-full p-4 bg-[#0A0C10] rounded-xl border border-white/10 mb-6">
         <div className="relative w-full md:w-96">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">
@@ -94,7 +119,6 @@ export default function AdminProjectsPage() {
         </button>
       </div>
 
-      {/* Project List */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -104,19 +128,26 @@ export default function AdminProjectsPage() {
           No projects found.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {filtered.map((project) => (
-            <ProjectListItem
+        <div className="grid grid-cols-1 gap-3">
+          {filtered.map((project, i) => (
+            <div
               key={project._id}
-              project={project}
-              onEdit={(id) => router.push(`/admin/projects/${id}/edit`)}
-              onDelete={handleDelete}
-            />
+              draggable
+              onDragStart={() => handleDragStart(i)}
+              onDragOver={(e) => handleDragOver(e, i)}
+              onDragEnd={handleDragEnd}
+              className={`transition-opacity ${dragIndex === i ? "opacity-50" : ""}`}
+            >
+              <ProjectListItem
+                project={project}
+                onEdit={(id) => router.push(`/admin/projects/${id}/edit`)}
+                onDelete={handleDelete}
+              />
+            </div>
           ))}
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between border-t border-white/5 pt-4 mt-4">
           <span className="text-on-surface-variant font-code-sm text-xs">

@@ -20,10 +20,16 @@ export function ProjectListItem({ project, onEdit, onDelete }: ProjectListItemPr
   const status = statusConfig[project.status] || statusConfig.draft;
 
   return (
-    <div className="group flex flex-col md:flex-row gap-4 p-4 md:p-6 bg-[#0A0C10] rounded-xl border border-white/10 inner-glow hover:border-primary/50 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 relative overflow-hidden">
+    <div className="group flex flex-col md:flex-row gap-4 p-4 md:p-6 bg-[#0A0C10] rounded-xl border border-white/10 inner-glow hover:border-primary/50 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 relative overflow-hidden cursor-grab active:cursor-grabbing">
       <div className="absolute inset-0 bg-gradient-to-r from-primary-container/0 to-primary-container/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-      <div className="w-full md:w-48 h-32 md:h-auto rounded-lg overflow-hidden border border-white/5 flex-shrink-0 relative bg-surface-container">
+      <div className="flex items-center gap-2 absolute left-0 top-0 bottom-0 pl-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="material-symbols-outlined text-on-surface-variant text-[16px]" style={{ fontVariationSettings: "'FILL' 0" }}>
+          grip_vertical
+        </span>
+      </div>
+
+      <div className="ml-0 md:ml-4 w-full md:w-48 h-32 md:h-auto rounded-lg overflow-hidden border border-white/5 flex-shrink-0 relative bg-surface-container">
         {project.imageUrl ? (
           <img
             src={project.imageUrl}

@@ -42,6 +42,10 @@ export class BaseRepository<T extends Document> {
     return this.model.findByIdAndDelete(id);
   }
 
+  async bulkWrite(operations: Record<string, unknown>[]) {
+    return this.model.bulkWrite(operations as never[]);
+  }
+
   async count(filter: Filter = {}): Promise<number> {
     return this.model.countDocuments(filter);
   }

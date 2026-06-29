@@ -14,6 +14,7 @@ export interface IProject extends Document {
   role?: string;
   timeline?: string;
   challenge?: string;
+  sortOrder: number;
 }
 
 const ProjectSchema = new Schema<IProject>(
@@ -31,6 +32,7 @@ const ProjectSchema = new Schema<IProject>(
     role: { type: String },
     timeline: { type: String },
     challenge: { type: String },
+    sortOrder: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

@@ -20,6 +20,7 @@ export const createProjectSchema = z.object({
   role: anyStringOrNull,
   timeline: anyStringOrNull,
   challenge: anyStringOrNull,
+  sortOrder: z.number().optional(),
 });
 
 export const updateProjectSchema = createProjectSchema.partial();
@@ -31,4 +32,11 @@ export const projectQuerySchema = z.object({
   featured: z.coerce.boolean().optional(),
   category: z.string().optional(),
   sort: z.string().optional().default('-createdAt'),
+});
+
+export const reorderProjectsSchema = z.object({
+  orders: z.array(z.object({
+    _id: z.string(),
+    sortOrder: z.number(),
+  })),
 });

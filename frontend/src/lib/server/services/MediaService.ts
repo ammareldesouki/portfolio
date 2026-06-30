@@ -1,12 +1,8 @@
 import { put, list, del } from '@vercel/blob';
-import { env } from '../config/env';
 
 export class MediaService {
   async upload(filename: string, buffer: Buffer, mimetype: string) {
-    const blob = await put(filename, buffer, {
-      access: 'public',
-      token: env.blobReadWriteToken || undefined,
-    });
+    const blob = await put(filename, buffer, { access: 'public' });
     return {
       url: blob.url,
       filename: blob.pathname,
@@ -17,11 +13,11 @@ export class MediaService {
   }
 
   async delete(filename: string) {
-    await del(filename, { token: env.blobReadWriteToken || undefined });
+    await del(filename);
   }
 
   async list() {
-    const { blobs } = await list({ token: env.blobReadWriteToken || undefined });
+    const { blobs } = await list();
     return blobs.map((b) => ({
       filename: b.pathname,
       original_filename: b.pathname,

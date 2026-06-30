@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const result = await mediaService.upload(file.name, buffer, file.type);
     return sendSuccess(result, 201);
-  } catch {
-    return sendError('Internal server error', 500);
+  } catch (err) {
+    console.error('[Media] Upload error:', err);
+    return sendError(err instanceof Error ? err.message : 'Internal server error', 500);
   }
 }

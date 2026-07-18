@@ -7,6 +7,7 @@ import { contactApi } from "@/lib/api/contact";
 import { settingsApi } from "@/lib/api/settings";
 import type { Settings } from "@/lib/api/settings";
 import { SkillCard } from "@/components/ui/SkillCard";
+import { Reveal } from "@/components/ui/Reveal";
 
 const allResumeSections = [
   { id: "experience", label: "01 // Experience", key: "showExperience" as const },
@@ -29,7 +30,19 @@ export default function AboutPage() {
 
   const s = settings;
 
-  const resumeSections = allResumeSections.filter((sec) => s ? (s as unknown as Record<string, boolean | undefined>)[sec.key] !== false : true);
+  // A resume section is shown only when it is enabled AND actually has content —
+  // no "coming soon" placeholders ship. Sections reappear automatically once
+  // entries are added in the CMS.
+  const sectionHasData: Record<string, boolean> = {
+    experience: !!(s?.experience && s.experience.length > 0),
+    education: !!(s?.education && s.education.length > 0),
+    certifications: !!(s?.certifications && s.certifications.length > 0),
+  };
+  const resumeSections = allResumeSections.filter(
+    (sec) =>
+      (s ? (s as unknown as Record<string, boolean | undefined>)[sec.key] !== false : false) &&
+      sectionHasData[sec.id]
+  );
 
   useEffect(() => {
     if (s && resumeSections.length > 0 && !resumeSections.find((sec) => sec.id === activeSection)) {
@@ -51,7 +64,7 @@ export default function AboutPage() {
   };
 
   return (
-    <main className="pt-24 md:pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-content mx-auto space-y-16 md:space-y-32">
+    <div className="pt-8 md:pt-12 pb-24 px-margin-mobile md:px-margin-desktop max-w-content mx-auto space-y-16 md:space-y-32">
       {/* About Section */}
       <section className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-gutter" id="about">
         <div className="md:col-span-7 space-y-6 md:space-y-8 flex flex-col justify-center order-2 md:order-1">
@@ -75,7 +88,7 @@ export default function AboutPage() {
           </div>
 
           {s?.bio && (
-            <div className="bg-surface-container border border-white/10 rounded-xl p-8 inner-glow">
+            <div className="bg-surface-container border border-hairline/10 rounded-xl p-8 inner-glow">
               <p className="text-on-surface-variant leading-relaxed whitespace-pre-line">
                 {s.bio}
               </p>
@@ -96,7 +109,7 @@ export default function AboutPage() {
           )}
         </div>
 
-        <div className="md:col-span-5 relative h-[300px] md:h-[500px] rounded-xl overflow-hidden border border-white/10 inner-glow bg-surface-container-low flex items-center justify-center order-1 md:order-2">
+        <div className="md:col-span-5 relative h-[300px] md:h-[500px] rounded-xl overflow-hidden border border-hairline/10 inner-glow bg-surface-container-low flex items-center justify-center order-1 md:order-2">
           {s?.avatar ? (
             <img
               src={s.avatar}
@@ -113,8 +126,8 @@ export default function AboutPage() {
 
       {/* Resume Section */}
       {resumeSections.length > 0 && (
-      <section className="space-y-12" id="resume">
-        <div className="flex justify-between items-end border-b border-white/10 pb-4">
+      <Reveal as="section" className="space-y-12" id="resume">
+        <div className="flex justify-between items-end border-b border-hairline/10 pb-4">
           <h2 className="font-headline-md text-headline-md text-on-surface">
             Curriculum Vitae
           </h2>
@@ -151,7 +164,7 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <div className="md:col-span-2 space-y-12 pl-0 md:pl-8 border-l-0 md:border-l border-white/5">
+          <div className="md:col-span-2 space-y-12 pl-0 md:pl-8 border-l-0 md:border-l border-hairline/5">
             {activeSection === "experience" && (
               s?.experience && s.experience.length > 0 ? (
                 s.experience.map((exp, i) => (
@@ -176,7 +189,7 @@ export default function AboutPage() {
                         {exp.technologies.map((tech, j) => (
                           <span
                             key={j}
-                            className="bg-[#16181D] text-[#666666] font-code-sm text-[10px] px-2 py-0.5 rounded"
+                            className="chip font-code-sm text-[10px] px-2 py-0.5 rounded"
                           >
                             {tech}
                           </span>
@@ -185,9 +198,7 @@ export default function AboutPage() {
                     )}
                   </div>
                 ))
-              ) : (
-                <p className="text-on-surface-variant">Experience details coming soon.</p>
-              )
+              ) : null
             )}
 
             {activeSection === "education" && (
@@ -213,9 +224,7 @@ export default function AboutPage() {
                     )}
                   </div>
                 ))
-              ) : (
-                <p className="text-on-surface-variant">Education details coming soon.</p>
-              )
+              ) : null
             )}
 
             {activeSection === "certifications" && (
@@ -247,16 +256,14 @@ export default function AboutPage() {
                     )}
                   </div>
                 ))
-              ) : (
-                <p className="text-on-surface-variant">Certifications coming soon.</p>
-              )
+              ) : null
             )}
           </div>
         </div>
-      </section>
+      </Reveal>
       )}
       {s?.contactEnabled !== false && (
-        <section className="max-w-3xl mx-auto space-y-12" id="contact">
+        <Reveal as="section" className="max-w-3xl mx-auto space-y-12" id="contact">
           <div className="text-center space-y-4">
             <h2 className="font-headline-md text-headline-md text-on-surface">
               Initiate Connection
@@ -287,7 +294,7 @@ export default function AboutPage() {
           ) : (
             <form
               onSubmit={handleContactSubmit}
-              className="space-y-6 bg-surface-container/50 border border-white/5 p-4 md:p-8 rounded-xl backdrop-blur-sm"
+              className="space-y-6 bg-surface-container/50 border border-hairline/5 p-4 md:p-8 rounded-xl backdrop-blur-sm"
             >
               {contactError && (
                 <div className="p-4 bg-error-container/20 border border-error/30 rounded-lg">
@@ -298,7 +305,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <Input
                   id="contact-name"
-                  label="Identification"
+                  label="Name"
                   value={contactForm.name}
                   onChange={(e) =>
                     setContactForm((f) => ({ ...f, name: e.target.value }))
@@ -308,7 +315,7 @@ export default function AboutPage() {
                 />
                 <Input
                   id="contact-email"
-                  label="Comm Channel"
+                  label="Email"
                   type="email"
                   value={contactForm.email}
                   onChange={(e) =>
@@ -321,27 +328,27 @@ export default function AboutPage() {
 
               <Textarea
                 id="contact-message"
-                label="Payload"
+                label="Message"
                 value={contactForm.message}
                 onChange={(e) =>
                   setContactForm((f) => ({ ...f, message: e.target.value }))
                 }
-                placeholder="Transmit your message here..."
+                placeholder="Your message..."
                 rows={5}
                 required
               />
 
               <button
                 type="submit"
-                className="w-full py-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-xl hover:bg-white/5 hover:border-primary transition-all duration-300 flex justify-center items-center gap-2"
+                className="w-full min-h-[44px] py-4 bg-transparent border border-hairline/10 text-on-surface font-code-sm text-code-sm rounded-xl hover:bg-hairline/5 hover:border-primary transition-all duration-300 flex justify-center items-center gap-2"
               >
-                Transmit{" "}
+                Send{" "}
                 <span className="material-symbols-outlined text-sm">send</span>
               </button>
             </form>
           )}
-        </section>
+        </Reveal>
       )}
-    </main>
+    </div>
   );
 }

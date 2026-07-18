@@ -18,10 +18,10 @@ export function Footer() {
     : [];
 
   return (
-    <footer className="bg-surface-container-lowest font-code-sm text-code-sm py-12 border-t border-white/5">
+    <footer className="bg-surface-container-lowest font-code-sm text-code-sm py-12 border-t border-hairline/5">
       <div className="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop max-w-content mx-auto gap-4">
         <span className="font-label-caps text-label-caps text-on-surface">
-          &copy; 2024 {settings?.displayName || "Portfolio"}. Built with Precision.
+          &copy; {new Date().getFullYear()} {settings?.displayName || "Portfolio"}. Built with Precision.
         </span>
         {links.length > 0 && (
           <div className="flex gap-6">

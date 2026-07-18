@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { settingsApi, type Skill } from "@/lib/api/settings";
 import { SkillCard } from "@/components/ui/SkillCard";
+import { Reveal } from "@/components/ui/Reveal";
 
 function groupByCategory(skills: Skill[]): Record<string, Skill[]> {
   const grouped: Record<string, Skill[]> = {};
@@ -30,13 +31,13 @@ export function SkillsSection() {
   const categories = Object.keys(grouped);
 
   return (
-    <section className="relative z-10" id="skills">
+    <Reveal as="section" className="relative z-10 py-16 md:py-24 px-margin-mobile md:px-margin-desktop" id="skills">
       <div className="max-w-content mx-auto space-y-8">
         <div className="flex items-center gap-4">
           <h2 className="font-headline-md text-headline-md text-on-surface">
             Skills & Tooling
           </h2>
-          <div className="h-px flex-grow bg-white/10" />
+          <div className="h-px flex-grow bg-hairline/10" />
         </div>
         <div className="space-y-12">
           {categories.map((category) => (
@@ -53,6 +54,6 @@ export function SkillsSection() {
           ))}
         </div>
       </div>
-    </section>
+    </Reveal>
   );
 }

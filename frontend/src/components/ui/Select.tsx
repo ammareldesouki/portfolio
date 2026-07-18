@@ -24,7 +24,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             id={id}
-            className={`appearance-none w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-3 font-body-base text-body-base text-on-surface focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all inner-glow cursor-pointer ${className}`}
+            className={`appearance-none w-full min-h-[44px] bg-field border border-hairline/10 rounded-xl px-4 py-3 font-body-base text-body-base text-on-surface focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all inner-glow cursor-pointer ${className}`}
             {...props}
           >
             {options.map((opt) => (

@@ -5,9 +5,9 @@ interface ChipProps {
 }
 
 const variantClasses: Record<string, string> = {
-  default: "chip text-[#666666]",
-  primary: "bg-[#16181D] text-primary border border-primary/30",
-  success: "bg-[#00382d] text-tertiary border border-tertiary/30",
+  default: "chip",
+  primary: "bg-primary/10 text-primary border border-primary/30",
+  success: "bg-tertiary/10 text-tertiary border border-tertiary/30",
 };
 
 export function Chip({ label, variant = "default", className = "" }: ChipProps) {

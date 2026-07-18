@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -17,11 +18,11 @@ export function TopNavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+    <nav className="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-hairline/10 shadow-2xl">
       <div className="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 w-full max-w-content mx-auto">
         <Link
           href="/"
-          className="font-display-lg text-headline-md font-bold text-on-surface tracking-tighter"
+          className="font-display-lg text-xl md:text-headline-md font-bold text-on-surface tracking-tighter"
         >
           FLUTTER.DEV
         </Link>
@@ -43,21 +44,26 @@ export function TopNavBar() {
               </Link>
             );
           })}
+          <ThemeToggle />
         </div>
 
-        <button
-          className="md:hidden text-on-surface"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span className="material-symbols-outlined">
-            {menuOpen ? "close" : "menu"}
-          </span>
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            className="inline-flex h-11 w-11 items-center justify-center text-on-surface"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+          >
+            <span className="material-symbols-outlined">
+              {menuOpen ? "close" : "menu"}
+            </span>
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
-        <div className="md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-xl">
+        <div className="md:hidden border-t border-hairline/10 bg-surface/95 backdrop-blur-xl">
           <div className="flex flex-col px-margin-mobile py-4 space-y-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;

@@ -2,78 +2,206 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Theme tokens as RGB triplets (space-separated) so Tailwind's `<alpha-value>`
+ * opacity modifiers keep working. :root = light theme, .dark = dark theme.
+ * next-themes toggles the `dark` class on <html>.
+ */
+:root {
+  --background: 255 255 255;
+  --on-background: 26 27 30;
+  --surface: 255 255 255;
+  --surface-dim: 236 237 240;
+  --surface-bright: 255 255 255;
+  --surface-variant: 226 227 232;
+  --surface-tint: 0 89 197;
+  --surface-container-lowest: 255 255 255;
+  --surface-container-low: 247 248 250;
+  --surface-container: 241 242 244;
+  --surface-container-high: 233 234 238;
+  --surface-container-highest: 226 227 232;
+  --on-surface: 26 27 30;
+  --on-surface-variant: 86 90 99;
+  --outline: 118 122 133;
+  --outline-variant: 201 204 211;
+  --primary: 0 89 197;
+  --on-primary: 255 255 255;
+  --primary-container: 0 112 243;
+  --on-primary-container: 255 255 255;
+  --primary-fixed: 215 227 255;
+  --on-primary-fixed: 0 26 67;
+  --primary-fixed-dim: 130 170 255;
+  --on-primary-fixed-variant: 0 67 151;
+  --inverse-primary: 174 198 255;
+  --secondary: 86 90 99;
+  --on-secondary: 255 255 255;
+  --secondary-container: 218 221 229;
+  --on-secondary-container: 63 67 75;
+  --secondary-fixed: 226 226 232;
+  --secondary-fixed-dim: 198 198 204;
+  --on-secondary-fixed: 26 28 32;
+  --on-secondary-fixed-variant: 69 71 75;
+  --tertiary: 0 120 106;
+  --on-tertiary: 255 255 255;
+  --tertiary-container: 156 241 220;
+  --on-tertiary-container: 0 32 25;
+  --tertiary-fixed: 107 250 216;
+  --tertiary-fixed-dim: 72 221 188;
+  --on-tertiary-fixed: 0 32 25;
+  --on-tertiary-fixed-variant: 0 81 66;
+  --error: 186 26 26;
+  --on-error: 255 255 255;
+  --error-container: 255 218 214;
+  --on-error-container: 65 0 2;
+  --inverse-surface: 47 48 51;
+  --inverse-on-surface: 241 242 244;
+
+  /* Theme-aware helpers */
+  --hairline: 0 0 0; /* used at low opacity for borders/overlays */
+  --card-bg: 255 255 255;
+  --field-bg: 255 255 255;
+  --chip-bg: 237 238 241;
+  --chip-text: 91 96 106;
+  --primary-hover: 0 89 197;
+  --card-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+}
+
+.dark {
+  --background: 19 19 20;
+  --on-background: 228 226 226;
+  --surface: 19 19 20;
+  --surface-dim: 19 19 20;
+  --surface-bright: 57 57 57;
+  --surface-variant: 52 53 53;
+  --surface-tint: 174 198 255;
+  --surface-container-lowest: 13 14 14;
+  --surface-container-low: 27 28 27;
+  --surface-container: 31 32 32;
+  --surface-container-high: 41 42 42;
+  --surface-container-highest: 52 53 53;
+  --on-surface: 228 226 226;
+  --on-surface-variant: 193 198 215;
+  --outline: 139 144 160;
+  --outline-variant: 65 71 84;
+  --primary: 174 198 255;
+  --on-primary: 0 46 107;
+  --primary-container: 0 112 243;
+  --on-primary-container: 255 255 255;
+  --primary-fixed: 216 226 255;
+  --on-primary-fixed: 0 26 67;
+  --primary-fixed-dim: 174 198 255;
+  --on-primary-fixed-variant: 0 67 151;
+  --inverse-primary: 0 89 197;
+  --secondary: 198 198 204;
+  --on-secondary: 47 48 53;
+  --secondary-container: 71 73 78;
+  --on-secondary-container: 183 184 190;
+  --secondary-fixed: 226 226 232;
+  --secondary-fixed-dim: 198 198 204;
+  --on-secondary-fixed: 26 28 32;
+  --on-secondary-fixed-variant: 69 71 75;
+  --tertiary: 72 221 188;
+  --on-tertiary: 0 56 45;
+  --tertiary-container: 0 134 111;
+  --on-tertiary-container: 255 255 255;
+  --tertiary-fixed: 107 250 216;
+  --tertiary-fixed-dim: 72 221 188;
+  --on-tertiary-fixed: 0 32 25;
+  --on-tertiary-fixed-variant: 0 81 66;
+  --error: 255 180 171;
+  --on-error: 105 0 5;
+  --error-container: 147 0 10;
+  --on-error-container: 255 218 214;
+  --inverse-surface: 228 226 226;
+  --inverse-on-surface: 48 48 49;
+
+  --hairline: 255 255 255;
+  --card-bg: 10 12 16;
+  --field-bg: 5 5 5;
+  --chip-bg: 22 24 29;
+  --chip-text: 102 102 102;
+  --primary-hover: 0 89 197;
+  --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
 body {
-  background-color: #050505;
-  color: #e4e2e2;
+  background-color: rgb(var(--background));
+  color: rgb(var(--on-background));
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @layer components {
   .hero-glow {
     background: radial-gradient(
       circle at 50% 50%,
-      rgba(0, 112, 243, 0.15) 0%,
-      rgba(5, 5, 5, 0) 50%
+      rgb(var(--primary-container) / 0.13) 0%,
+      rgb(var(--background) / 0) 50%
     );
   }
 
   .glass-panel {
-    background: rgba(10, 12, 16, 0.7);
+    background: rgb(var(--surface) / 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgb(var(--hairline) / 0.08);
   }
 
   .card-border {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: #0a0c10;
+    border: 1px solid rgb(var(--hairline) / 0.1);
+    background-color: rgb(var(--card-bg));
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   }
 
   .card-border:hover {
-    border-color: #aec6ff;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    transform: translateY(-2px);
+    border-color: rgb(var(--primary));
+    box-shadow: var(--card-shadow);
+    transform: translateY(-4px);
   }
 
   .btn-primary {
     position: relative;
-    background-color: #0070f3;
-    color: #ffffff;
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    background-color: rgb(var(--primary-container));
+    color: rgb(var(--on-primary-container));
+    box-shadow: inset 0 1px 0 0 rgb(var(--hairline) / 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
   }
 
   .btn-primary:hover {
-    background-color: #0059c5;
+    background-color: rgb(var(--primary-hover));
+    transform: translateY(-1px);
   }
 
   .btn-ghost {
     background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #e4e2e2;
+    border: 1px solid rgb(var(--hairline) / 0.1);
+    color: rgb(var(--on-surface));
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   }
 
   .btn-ghost:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgb(var(--hairline) / 0.08);
+    border-color: rgb(var(--primary) / 0.5);
   }
 
   .chip {
-    background-color: #16181d;
-    color: #666666;
+    background-color: rgb(var(--chip-bg));
+    color: rgb(var(--chip-text));
   }
 
   .inner-glow {
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 1px 0 0 rgb(var(--hairline) / 0.05);
   }
 }
 
 .selection\:bg-primary-container::selection {
-  background-color: #0070f3;
+  background-color: rgb(var(--primary-container));
 }
 
 .selection\:text-on-primary-container::selection {
-  color: #ffffff;
+  color: rgb(var(--on-primary-container));
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -82,4 +210,55 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/*
+ * Animations — scroll reveal + page fade. Kept subtle (fast, small offsets).
+ * Everything is fully disabled under prefers-reduced-motion.
+ */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-fade {
+  animation: page-fade-in 0.28s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .card-border:hover {
+    transform: none;
+  }
 }

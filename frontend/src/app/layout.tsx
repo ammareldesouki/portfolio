@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "./providers";
 import { connectDatabase } from "@/lib/server/config/database";
 import { Settings } from "@/lib/server/models/Settings";
 
@@ -29,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap"
@@ -41,7 +42,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-background font-body-base antialiased selection:bg-primary-container selection:text-on-primary-container">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

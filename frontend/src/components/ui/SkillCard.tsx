@@ -10,7 +10,7 @@ export function SkillCard({ name, icon }: SkillCardProps) {
   const isUrl = icon?.startsWith("http://") || icon?.startsWith("https://");
 
   return (
-    <div className="group flex flex-col items-center gap-4 bg-surface-container border border-white/5 p-6 md:p-8 rounded-xl hover:border-primary/50 transition-all duration-300 cursor-default">
+    <div className="group flex flex-col items-center gap-4 bg-surface-container border border-hairline/5 p-6 md:p-8 rounded-xl hover:border-primary/50 transition-all duration-300 cursor-default">
       {icon ? (
         isUrl ? (
           <span className="w-12 h-12 flex items-center justify-center">

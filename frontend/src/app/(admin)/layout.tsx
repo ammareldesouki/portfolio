@@ -19,7 +19,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#050505]">
+      <div className="dark flex items-center justify-center min-h-screen bg-[#050505]">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -36,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <AuthProvider>
       <AuthGuard>
-        <div className="min-h-screen flex bg-[#050505]">
+        <div className="dark min-h-screen flex bg-[#050505] text-on-surface">
           <SideNavBar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
           <div className="flex-1 md:ml-sidebar-width flex flex-col min-h-screen">
             <TopAppBar title="Dashboard" onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />

@@ -2,20 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { ProjectCard } from "./ProjectCard";
+import { Reveal } from "@/components/ui/Reveal";
 import { projectsApi, Project } from "@/lib/api/projects";
 
 export function FeaturedProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     projectsApi
       .list({ featured: true, limit: 3, status: "published" })
       .then((res) => setProjects(res.data || []))
-      .catch(() => {});
+      .catch(() => setProjects([]))
+      .finally(() => setLoading(false));
   }, []);
 
+  // Nothing featured yet: hide the whole section rather than show endless skeletons.
+  if (!loading && projects.length === 0) return null;
+
   return (
-    <section className="py-24 px-margin-mobile md:px-margin-desktop relative z-10" id="projects">
+    <Reveal as="section" className="py-24 px-margin-mobile md:px-margin-desktop relative z-10" id="projects">
       <div className="max-w-content mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
           <div>
@@ -39,7 +45,7 @@ export function FeaturedProjects() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-          {projects.length === 0 ? (
+          {loading ? (
             <>
               {[1, 2, 3].map((i) => (
                 <div
@@ -62,6 +68,6 @@ export function FeaturedProjects() {
           )}
         </div>
       </div>
-    </section>
+    </Reveal>
   );
 }

@@ -2,7 +2,11 @@ import { put, list, del } from '@vercel/blob';
 
 export class MediaService {
   async upload(filename: string, buffer: Buffer, mimetype: string) {
-    const blob = await put(filename, buffer, { access: 'public' });
+    const blob = await put(filename, buffer, {
+      access: 'public',
+      contentType: mimetype,
+      addRandomSuffix: true,
+    });
     return {
       url: blob.url,
       filename: blob.pathname,

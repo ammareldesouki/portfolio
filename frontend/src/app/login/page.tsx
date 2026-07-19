@@ -36,7 +36,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050505] px-4">
+    <div className="dark min-h-screen flex items-center justify-center bg-[#050505] px-4">
       <div className="w-full max-w-md bg-surface-container border border-white/10 rounded-2xl p-8 space-y-6">
         <div className="text-center">
           <h1 className="font-headline-md text-headline-md text-primary">

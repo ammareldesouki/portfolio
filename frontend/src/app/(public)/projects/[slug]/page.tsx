@@ -72,11 +72,13 @@ export default function ProjectDetailPage() {
                 <Chip key={tech} label={tech} />
               ))}
             </div>
-            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface max-w-4xl">
+            {/* Title/challenge overlay a permanently-dark image scrim in both
+                themes, so they stay light regardless of the active theme. */}
+            <h1 className="font-display-lg-mobile md:font-display-lg text-4xl md:text-display-lg text-white max-w-4xl">
               {project.title}
             </h1>
             {project.challenge && (
-              <p className="font-headline-md text-headline-md text-on-surface-variant max-w-2xl mt-4">
+              <p className="font-headline-md text-headline-md text-white/80 max-w-2xl mt-4">
                 {project.challenge}
               </p>
             )}
@@ -87,7 +89,7 @@ export default function ProjectDetailPage() {
       <div className="w-full max-w-content mx-auto px-margin-mobile md:px-margin-desktop py-16 flex flex-col gap-24">
         {/* Overview Bento Grid */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-          <div className="col-span-1 md:col-span-2 bg-[#0A0C10] border border-white/10 p-8 rounded-xl flex flex-col justify-center">
+          <div className="col-span-1 md:col-span-2 bg-card border border-hairline/10 p-8 rounded-xl flex flex-col justify-center">
             <h2 className="font-headline-md text-headline-md text-primary mb-4">
               {project.challenge ? "The Challenge" : "Overview"}
             </h2>
@@ -96,7 +98,7 @@ export default function ProjectDetailPage() {
             </p>
           </div>
 
-          <div className="col-span-1 bg-[#0A0C10] border border-white/10 p-8 rounded-xl flex flex-col gap-6">
+          <div className="col-span-1 bg-card border border-hairline/10 p-8 rounded-xl flex flex-col gap-6">
             {project.role && (
               <div>
                 <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">
@@ -160,7 +162,7 @@ export default function ProjectDetailPage() {
               {images.map((url, i) => (
                 <div
                   key={i}
-                  className="bg-[#0A0C10] border border-white/10 rounded-lg overflow-hidden shrink-0"
+                  className="bg-card border border-hairline/10 rounded-lg overflow-hidden shrink-0"
                 >
                   <img
                     src={url}

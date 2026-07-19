@@ -8,6 +8,7 @@ import { settingsApi } from "@/lib/api/settings";
 import type { Settings } from "@/lib/api/settings";
 import { SkillCard } from "@/components/ui/SkillCard";
 import { Reveal } from "@/components/ui/Reveal";
+import { groupSkillsByCategory } from "@/lib/skills";
 
 const allResumeSections = [
   { id: "experience", label: "01 // Experience", key: "showExperience" as const },
@@ -96,15 +97,24 @@ export default function AboutPage() {
           )}
 
           {s?.showSkills !== false && s?.skills && s.skills.length > 0 && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               <h3 className="font-label-caps text-label-caps text-tertiary">
                 Skills & Tooling
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {s.skills.map((skill, i) => (
-                  <SkillCard key={i} name={skill.name} icon={skill.icon} />
-                ))}
-              </div>
+              {Object.entries(groupSkillsByCategory(s.skills)).map(
+                ([category, list]) => (
+                  <div key={category} className="space-y-4">
+                    <h4 className="font-code-sm text-code-sm text-on-surface-variant">
+                      {category}
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {list.map((skill, i) => (
+                        <SkillCard key={i} name={skill.name} icon={skill.icon} />
+                      ))}
+                    </div>
+                  </div>
+                )
+              )}
             </div>
           )}
         </div>

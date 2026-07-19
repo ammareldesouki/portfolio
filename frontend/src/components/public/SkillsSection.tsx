@@ -4,16 +4,7 @@ import { useEffect, useState } from "react";
 import { settingsApi, type Skill } from "@/lib/api/settings";
 import { SkillCard } from "@/components/ui/SkillCard";
 import { Reveal } from "@/components/ui/Reveal";
-
-function groupByCategory(skills: Skill[]): Record<string, Skill[]> {
-  const grouped: Record<string, Skill[]> = {};
-  for (const skill of skills) {
-    const cat = skill.category || "Other";
-    if (!grouped[cat]) grouped[cat] = [];
-    grouped[cat].push(skill);
-  }
-  return grouped;
-}
+import { groupSkillsByCategory } from "@/lib/skills";
 
 export function SkillsSection() {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -27,7 +18,7 @@ export function SkillsSection() {
 
   if (skills.length === 0) return null;
 
-  const grouped = groupByCategory(skills);
+  const grouped = groupSkillsByCategory(skills);
   const categories = Object.keys(grouped);
 
   return (

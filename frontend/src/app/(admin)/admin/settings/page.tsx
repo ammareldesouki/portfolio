@@ -572,6 +572,18 @@ export default function AdminSettingsPage() {
                     No skills added yet. Click + to add one.
                   </p>
                 )}
+                {/* Suggest categories already in use so grouping stays consistent */}
+                <datalist id="skill-category-options">
+                  {Array.from(
+                    new Set(
+                      form.skills
+                        .map((sk) => sk.category?.trim())
+                        .filter((c): c is string => !!c)
+                    )
+                  ).map((c) => (
+                    <option key={c} value={c} />
+                  ))}
+                </datalist>
                 {form.skills.map((skill, i) => (
                   <div key={i} className="flex items-start gap-3 bg-[#050505] border border-white/5 p-3 rounded-lg">
                     <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -584,6 +596,7 @@ export default function AdminSettingsPage() {
                       />
                       <input
                         type="text"
+                        list="skill-category-options"
                         value={skill.category || ""}
                         onChange={(e) => handleSkillChange(i, "category", e.target.value)}
                         placeholder="Category (e.g. Languages)"

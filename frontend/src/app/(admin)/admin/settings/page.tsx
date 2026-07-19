@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Toggle } from "@/components/ui/Toggle";
 import { settingsApi } from "@/lib/api/settings";
-import { mediaApi, LocalMediaResource } from "@/lib/api/media";
-import type { Settings, Skill, Experience, Education, Certification, SocialLink } from "@/lib/api/settings";
+import { SkillsEditor } from "@/components/admin/SkillsEditor";
+import { useToast, ToastHost } from "@/components/ui/Toast";
+import type { Settings, Experience, Education, Certification, SocialLink } from "@/lib/api/settings";
 
 const tabs = [
   { id: "general", label: "General", icon: "settings" },
@@ -21,12 +22,34 @@ const tabs = [
 type FormState = Omit<Settings, "_id">;
 
 export default function AdminSettingsPage() {
-  const [media, setMedia] = useState<LocalMediaResource[]>([]);
+  const { toast, show, clear } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState("general");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [initialForm, setInitialForm] = useState<FormState | null>(null);
+
+  // Tab state is mirrored to the URL (?tab=) via history so refresh, deep-links,
+  // and browser back/forward all keep the active tab — without pulling in
+  // useSearchParams (which would force a Suspense boundary on this route).
+  const validTabs = tabs.map((t) => t.id);
+  const [activeTab, setActiveTabState] = useState("general");
+
+  useEffect(() => {
+    const applyFromUrl = () => {
+      const t = new URLSearchParams(window.location.search).get("tab");
+      setActiveTabState(t && validTabs.includes(t) ? t : "general");
+    };
+    applyFromUrl();
+    window.addEventListener("popstate", applyFromUrl);
+    return () => window.removeEventListener("popstate", applyFromUrl);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const setActiveTab = (id: string) => {
+    setActiveTabState(id);
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", id);
+    window.history.pushState(null, "", `?${params.toString()}`);
+  };
 
   const [form, setForm] = useState<FormState>({
     displayName: "",
@@ -57,13 +80,10 @@ export default function AdminSettingsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const [settingsRes, mediaRes] = await Promise.all([
-          settingsApi.getAll(),
-          mediaApi.list(),
-        ]);
+        const settingsRes = await settingsApi.getAll();
         if (settingsRes.data) {
           const s = settingsRes.data;
-          setForm({
+          const loaded: FormState = {
             displayName: s.displayName,
             tagline: s.tagline || "",
             avatar: s.avatar || "",
@@ -87,9 +107,10 @@ export default function AdminSettingsPage() {
             showExperience: s.showExperience ?? true,
             showEducation: s.showEducation ?? true,
             showCertifications: s.showCertifications ?? true,
-          });
+          };
+          setForm(loaded);
+          setInitialForm(loaded);
         }
-        setMedia(mediaRes.data || []);
       } catch (err) {
         console.error("Failed to load settings", err);
       } finally {
@@ -115,20 +136,6 @@ export default function AdminSettingsPage() {
 
   function removeSocialLink(index: number) {
     handleChange("socialLinks", form.socialLinks.filter((_, i) => i !== index));
-  }
-
-  function handleSkillChange(index: number, field: keyof Skill, value: string | number) {
-    const skills = [...form.skills];
-    skills[index] = { ...skills[index], [field]: value as never };
-    handleChange("skills", skills);
-  }
-
-  function addSkill() {
-    handleChange("skills", [...form.skills, { name: "", category: "", icon: "" }]);
-  }
-
-  function removeSkill(index: number) {
-    handleChange("skills", form.skills.filter((_, i) => i !== index));
   }
 
   function handleExpChange(index: number, field: keyof Experience, value: unknown) {
@@ -186,50 +193,25 @@ export default function AdminSettingsPage() {
     try {
       const res = await settingsApi.update(form);
       if (res.success) {
-        alert("Settings saved");
+        setInitialForm(form);
+        show("Settings saved", "success");
       } else {
-        alert("Error: " + (res.error || res.message || "Unknown error"));
+        show("Error: " + (res.error || res.message || "Unknown error"), "error");
       }
     } catch (err: unknown) {
       const axiosErr = err as { response?: { data?: { error?: string } }; message?: string };
       const msg = axiosErr.response?.data?.error || axiosErr.message || "Unknown error";
-      alert("Failed to save: " + msg);
+      show("Failed to save: " + msg, "error");
     } finally {
       setSaving(false);
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      await mediaApi.upload(file);
-      const mediaRes = await mediaApi.list();
-      setMedia(mediaRes.data || []);
-    } catch (err) {
-      console.error("Upload failed", err);
-      alert("Upload failed: " + (err instanceof Error ? err.message : "Unknown error"));
-    } finally {
-      setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+  const handleCancel = () => {
+    if (initialForm) {
+      setForm(initialForm);
+      show("Changes discarded", "info");
     }
-  };
-
-  const handleDeleteMedia = async (publicId: string) => {
-    if (!confirm("Delete this file?")) return;
-    try {
-      await mediaApi.delete(publicId);
-      setMedia((prev) => prev.filter((m) => m.public_id !== publicId));
-    } catch (err) {
-      console.error("Delete failed", err);
-    }
-  };
-
-  const formatBytes = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   if (loading) {
@@ -241,124 +223,8 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="space-y-12 pb-24">
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-        {/* Media Library — left column */}
-        <section className="xl:col-span-5">
-          <div className="flex justify-between items-end mb-6">
-            <div>
-              <h3 className="font-headline-md text-headline-md text-on-surface">
-                Media Library
-              </h3>
-              <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
-                Manage your uploaded assets
-              </p>
-            </div>
-            <div className="text-right">
-              <span className="font-label-caps text-label-caps text-tertiary">
-                Storage Usage
-              </span>
-              <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
-                {media.length} files
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <div
-              onClick={() => fileInputRef.current?.click()}
-              className="bg-[#0A0C10] border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center p-8 text-center min-h-[200px] transition-colors hover:border-primary cursor-pointer group"
-            >
-              <div className="w-12 h-12 rounded-full bg-surface-bright/20 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="material-symbols-outlined text-primary text-[24px]">
-                  {uploading ? "hourglass_top" : "cloud_upload"}
-                </span>
-              </div>
-              <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-2">
-                {uploading ? "Uploading..." : "Drag & Drop files here"}
-              </h4>
-              <p className="font-code-sm text-code-sm text-on-surface-variant mb-6">
-                or click to browse from your computer
-              </p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*,video/*,application/pdf"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-              <button
-                type="button"
-                disabled={uploading}
-                className="px-6 py-2 bg-transparent border border-white/10 rounded-lg font-code-sm text-code-sm text-on-surface hover:bg-white/5 transition-colors disabled:opacity-50"
-              >
-                Select Files
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-              {media.length === 0 ? (
-                <div className="col-span-full flex items-center justify-center h-[200px] text-on-surface-variant text-sm">
-                  No media uploaded yet.
-                </div>
-              ) : (
-                media.map((asset) => (
-                  <div
-                    key={asset.public_id}
-                    className="bg-[#0A0C10] rounded-xl overflow-hidden border border-white/10 group relative aspect-square"
-                  >
-                    {asset.resource_type === "video" ? (
-                      <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
-                        <span className="material-symbols-outlined text-4xl text-on-surface-variant">
-                          play_circle
-                        </span>
-                      </div>
-                    ) : asset.format === "pdf" ? (
-                      <div className="absolute inset-0 flex items-center justify-center bg-surface-bright/20">
-                        <span className="material-symbols-outlined text-4xl text-on-surface-variant">
-                          picture_as_pdf
-                        </span>
-                      </div>
-                    ) : (
-                      <img
-                        src={asset.secure_url}
-                        alt={asset.original_filename}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                      <div className="flex flex-col gap-1 w-full">
-                        <div className="flex justify-between items-center w-full">
-                          <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm truncate max-w-[70%]">
-                            {asset.original_filename}.{asset.format}
-                          </span>
-                          <span className="font-code-sm text-[10px] text-white bg-[#16181D]/80 px-2 py-0.5 rounded backdrop-blur-sm">
-                            {formatBytes(asset.bytes)}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => { navigator.clipboard.writeText(asset.secure_url); alert("URL copied: " + asset.secure_url.slice(0, 30) + "..."); }}
-                          className="font-code-sm text-[10px] text-primary bg-primary/20 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary/30 transition-colors"
-                        >
-                          Copy URL
-                        </button>
-                      </div>
-                      <button
-                        onClick={() => handleDeleteMedia(asset.public_id)}
-                        className="absolute top-2 right-2 text-white hover:text-error transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-[16px]">delete</span>
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Global Settings — right column */}
-        <section className="xl:col-span-7">
+    <div className="pb-24">
+        <section>
           <div className="mb-6">
             <h3 className="font-headline-md text-headline-md text-on-surface">
               Global Settings
@@ -374,10 +240,10 @@ export default function AdminSettingsPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-code-sm text-code-sm whitespace-nowrap transition-colors ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-code-sm text-code-sm whitespace-nowrap transition-colors border ${
                 activeTab === tab.id
-                  ? "bg-primary-container text-on-primary-container"
-                  : "text-on-surface-variant hover:bg-surface-bright/10 hover:text-on-surface"
+                  ? "bg-[#1E242D] text-primary border-primary/40"
+                  : "text-on-surface-variant border-transparent hover:bg-surface-bright/10 hover:text-on-surface"
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
@@ -554,76 +420,21 @@ export default function AdminSettingsPage() {
 
             {/* Skills Tab */}
             {activeTab === "skills" && (
-              <div className="bg-[#0A0C10] p-6 rounded-xl border border-white/10 space-y-4">
-                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-4">
-                  <h4 className="font-body-base text-body-base font-semibold text-on-surface">
-                    Skills
-                  </h4>
-                  <button
-                    type="button"
-                    onClick={addSkill}
-                    className="text-primary hover:text-primary-fixed transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">add</span>
-                  </button>
-                </div>
-                {form.skills.length === 0 && (
-                  <p className="text-on-surface-variant text-sm text-center py-8">
-                    No skills added yet. Click + to add one.
-                  </p>
-                )}
-                {/* Suggest categories already in use so grouping stays consistent */}
-                <datalist id="skill-category-options">
-                  {Array.from(
-                    new Set(
-                      form.skills
-                        .map((sk) => sk.category?.trim())
-                        .filter((c): c is string => !!c)
-                    )
-                  ).map((c) => (
-                    <option key={c} value={c} />
-                  ))}
-                </datalist>
-                {form.skills.map((skill, i) => (
-                  <div key={i} className="flex items-start gap-3 bg-[#050505] border border-white/5 p-3 rounded-lg">
-                    <div className="flex-1 flex flex-col sm:flex-row gap-3">
-                      <input
-                        type="text"
-                        value={skill.name}
-                        onChange={(e) => handleSkillChange(i, "name", e.target.value)}
-                        placeholder="Skill name"
-                        className="flex-1 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
-                      />
-                      <input
-                        type="text"
-                        list="skill-category-options"
-                        value={skill.category || ""}
-                        onChange={(e) => handleSkillChange(i, "category", e.target.value)}
-                        placeholder="Category (e.g. Languages)"
-                        className="flex-1 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
-                      />
-                      <input
-                        type="text"
-                        value={skill.icon || ""}
-                        onChange={(e) => handleSkillChange(i, "icon", e.target.value)}
-                        placeholder="Icon name"
-                        className="w-32 bg-transparent border border-white/5 rounded text-on-surface font-code-sm text-code-sm px-2 py-1 outline-none focus:border-primary/50"
-                      />
-                      {skill.icon && (
-                        <div className="flex items-center justify-center w-8 h-8 mt-1 text-on-surface-variant">
-                          <span className="material-symbols-outlined text-xl">{skill.icon}</span>
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => removeSkill(i)}
-                      className="text-on-surface-variant hover:text-error transition-colors flex-shrink-0 mt-1"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">close</span>
-                    </button>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h4 className="font-body-base text-body-base font-semibold text-on-surface">
+                      Skills
+                    </h4>
+                    <p className="font-code-sm text-code-sm text-on-surface-variant mt-1">
+                      Group skills by category, pick logos, and reorder with the arrows.
+                    </p>
                   </div>
-                ))}
+                </div>
+                <SkillsEditor
+                  skills={form.skills}
+                  onChange={(skills) => handleChange("skills", skills)}
+                />
               </div>
             )}
 
@@ -999,8 +810,9 @@ export default function AdminSettingsPage() {
               <div className="flex gap-4 pt-2">
                 <button
                   type="button"
-                  onClick={() => window.location.reload()}
-                  className="flex-1 py-3 px-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-lg hover:bg-white/5 transition-colors"
+                  onClick={handleCancel}
+                  disabled={saving}
+                  className="flex-1 py-3 px-4 bg-transparent border border-white/10 text-on-surface font-code-sm text-code-sm rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -1017,7 +829,8 @@ export default function AdminSettingsPage() {
           </div>
         </div>
       </section>
-      </div>
+
+      <ToastHost toast={toast} onClose={clear} />
     </div>
   );
 }

@@ -7,9 +7,7 @@ import { useAuth } from "@/lib/auth-context";
 const sidebarLinks = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
   { href: "/admin/projects", label: "Projects", icon: "inventory_2" },
-  { href: "/admin/skills", label: "Skills", icon: "terminal" },
-  { href: "/admin/experience", label: "Experience", icon: "work_history" },
-  { href: "/admin/settings", label: "Media", icon: "perm_media" },
+  { href: "/admin/media", label: "Media", icon: "perm_media" },
   { href: "/admin/settings", label: "Settings", icon: "settings" },
 ];
 
@@ -35,7 +33,10 @@ export function SideNavBar({ open, onClose }: SideNavBarProps) {
 
       <nav className="flex-1 flex flex-col gap-1">
         {sidebarLinks.map((link) => {
-          const isActive = pathname === link.href;
+          const isActive =
+            link.href === "/admin"
+              ? pathname === "/admin"
+              : pathname.startsWith(link.href);
           return (
             <Link
               key={link.href + link.label}

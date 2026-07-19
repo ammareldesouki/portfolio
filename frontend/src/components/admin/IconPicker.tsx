@@ -123,17 +123,37 @@ export function IconPicker({
             )}
           </div>
 
-          <div className="pt-1 border-t border-white/5 space-y-1.5">
-            <label className="font-label-caps text-label-caps text-on-surface-variant">
-              Custom URL or Material icon name
+          <div className="pt-2 border-t border-white/5 space-y-1.5">
+            <label className="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">link</span>
+              Not listed? Paste an image link
             </label>
-            <input
-              type="text"
-              value={value || ""}
-              onChange={(e) => onChange(e.target.value)}
-              placeholder="https://… or e.g. code"
-              className="w-full bg-[#1E242D] border border-white/10 rounded-lg px-3 py-2 font-code-sm text-code-sm text-on-surface outline-none focus:border-primary/50"
-            />
+            <div className="flex items-center gap-2">
+              <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-[#1E242D] border border-white/10 shrink-0">
+                <IconPreview icon={value} size={20} />
+              </span>
+              <input
+                type="text"
+                value={value || ""}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="https://…/logo.svg  or  a Material icon name"
+                className="flex-1 bg-[#1E242D] border border-white/10 rounded-lg px-3 py-2 font-code-sm text-code-sm text-on-surface outline-none focus:border-primary/50"
+              />
+              {value && (
+                <button
+                  type="button"
+                  onClick={() => onChange("")}
+                  className="flex items-center justify-center w-8 h-8 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors shrink-0"
+                  aria-label="Clear icon"
+                >
+                  <span className="material-symbols-outlined text-[16px]">close</span>
+                </button>
+              )}
+            </div>
+            <p className="text-[10px] text-on-surface-variant/70 leading-relaxed">
+              Paste any PNG/SVG logo URL (e.g. from your Media Library), or type a
+              Material Symbols name. The preview updates live.
+            </p>
           </div>
         </div>
       )}
